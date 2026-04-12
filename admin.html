@@ -370,6 +370,20 @@ const WH_KEY = 'admin_gs_webhook';
 let allOrders = [];
 let currentFilter = '전체';
 
+// 주문 상품 공통 처리
+function getOrderItemsText(o) {
+  return (
+    o.items ||
+    o.item ||
+    o.product ||
+    o.products ||
+    o.orderItems ||
+    o['주문상품'] ||
+    o['상품'] ||
+    ''
+  ).toString().trim();
+}
+
 // ── LOGIN ──
 function doLogin() {
   if (document.getElementById('pw-input').value === PW) {
@@ -540,7 +554,11 @@ function renderOrders() {
         </div>
         <div class="items-box" style="margin-bottom:16px;">
           <div class="lbl">주문 상품</div>
-          ${(o.items||'').split(',').map(it=>`<div class="item-row"><span>${it.trim()}</span></div>`).join('')}
+          ${getOrderItemsText(o)
+            .split(/\n|,/)
+            .filter(it => it.trim())
+            .map(it => `<div class="item-row"><span>${it.trim()}</span></div>`)
+            .join('') || `<div class="item-row"><span>상품 정보 없음</span></div>`}
           <div class="item-row"><span style="font-weight:700">합계</span><span class="price">${Number(o.totalAmount).toLocaleString()}원</span></div>
         </div>
         <div class="action-title" style="margin-bottom:8px;">📋 상태 변경</div>
@@ -593,7 +611,7 @@ function makeSMSLink(o, type) {
     const tpl = templates.paid || '[월림마을] 안녕하세요, {이름}님 🍈\n\n입금이 확인되었습니다 ✅\n\n• 주문 상품 : {상품}\n• 결제 금액 : {금액}원\n\n수확 스케줄에 따라 순차적으로\n배송 안내 드리겠습니다.\n\n감사합니다 😊';
     msg = tpl
       .replace(/{이름}/g, o.name)
-      .replace(/{상품}/g, o.items)
+      .replace(/{상품}/g, getOrderItemsText(o))
       .replace(/{금액}/g, Number(o.totalAmount).toLocaleString());
   }
   return `sms:${o.phone.replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
@@ -638,7 +656,7 @@ function confirmDeliveryDate() {
   }
   const msg = tpl
     .replace(/{이름}/g, o.name)
-    .replace(/{상품}/g, o.items)
+    .replace(/{상품}/g, getOrderItemsText(o))
     .replace(/{날짜}/g, date)
     .replace(/{주소}/g, addr)
     .replace(/{배송사정보}/g, carrierInfo);
