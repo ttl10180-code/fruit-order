@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍈 월림마을 관리자</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0F1117; --surface:#1A1D27; --surface2:#22263A; --border:#2E3250;
+    --accent:#4F8EF7; --green:#2ECC71; --yellow:#F4C430; --orange:#FF6B35;
+    --red:#E74C3C; --kakao:#FAE100; --text:#E8EAF0; --muted:#6B7099;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* LOGIN */
+  .login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-card { background:var(--surface); border:1px solid var(--border); border-radius:24px; padding:48px 36px; width:100%; max-width:380px; text-align:center; }
+  .login-icon { font-size:52px; margin-bottom:16px; display:block; }
+  .login-card h1 { font-family:'Noto Serif KR',serif; font-size:22px; font-weight:900; margin-bottom:6px; }
+  .login-card p { font-size:13px; color:var(--muted); margin-bottom:28px; }
+  .pw-input { width:100%; padding:14px 16px; background:var(--surface2); border:1.5px solid var(--border); border-radius:12px; color:var(--text); font-size:16px; font-family:'Noto Sans KR',sans-serif; outline:none; text-align:center; letter-spacing:6px; margin-bottom:14px; transition:border-color .2s; }
+  .pw-input:focus { border-color:var(--accent); }
+  .login-btn { width:100%; padding:15px; background:var(--accent); color:#fff; border:none; border-radius:12px; font-family:'Noto Serif KR',serif; font-size:16px; font-weight:700; cursor:pointer; transition:all .2s; }
+  .login-btn:hover { opacity:.9; }
+  .login-err { font-size:13px; color:var(--red); margin-top:10px; display:none; }
+
+  /* ADMIN */
+  .admin-wrap { display:none; }
+  header.admin-header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+  .admin-header .logo { display:flex; align-items:center; gap:10px; }
+  .admin-header .logo span { font-family:'Noto Serif KR',serif; font-size:16px; font-weight:700; }
+  .logout-btn { background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:8px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:'Noto Sans KR',sans-serif; transition:all .2s; }
+  .logout-btn:hover { border-color:var(--red); color:var(--red); }
+
+  .admin-main { max-width:960px; margin:0 auto; padding:28px 16px 60px; }
+
+  /* TABS */
+  .tab-nav { display:flex; gap:8px; margin-bottom:28px; border-bottom:1px solid var(--border); padding-bottom:0; }
+  .tab-btn { padding:10px 20px; background:transparent; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Noto Sans KR',sans-serif; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .2s; }
+  .tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; animation:fadeUp .3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  /* STATS */
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 16px; text-align:center; }
+  .stat-num { font-family:'Noto Serif KR',serif; font-size:26px; font-weight:900; margin-bottom:4px; }
+  .stat-label { font-size:11px; color:var(--muted); }
+
+  /* SECTION */
+  .section-title { font-family:'Noto Serif KR',serif; font-size:16px; font-weight:700; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+
+  /* SETTINGS CARDS */
+  .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:28px; }
+  .setting-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; }
+  .setting-card h3 { font-size:14px; font-weight:700; margin-bottom:16px; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .setting-row { margin-bottom:14px; }
+  .setting-label { font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .setting-input { width:100%; padding:10px 12px; background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; color:var(--text); font-size:14px; font-family:'Noto Sans KR',sans-serif; outline:none; transition:border-color .2s; }
+  .setting-input:focus { border-color:var(--accent); }
+  .save-setting-btn { width:100%; padding:11px; background:var(--accent); color:#fff; border:none; border-radius:10px; font-family:'Noto Sans KR',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; margin-top:4px; }
+  .save-setting-btn:hover { opacity:.9; }
+  .save-setting-btn.green { background:var(--green); }
+  .setting-status { font-size:12px; margin-top:8px; min-height:18px; text-align:center; }
+  .setting-status.ok { color:var(--green); }
+  .setting-status.err { color:var(--red); }
+
+  /* PRICE CARDS */
+  .price-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
+  .price-item { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px; }
+  .price-item .name { font-size:13px; color:var(--muted); margin-bottom:8px; }
+  .price-item .price-input { width:100%; padding:9px 12px; background:var(--surface); border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; font-weight:700; font-family:'Noto Sans KR',sans-serif; outline:none; transition:border-color .2s; }
+  .price-item .price-input:focus { border-color:var(--yellow); }
+
+  /* FILTERS */
+  .filter-row { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+  .filter-btn { padding:7px 16px; border-radius:20px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; font-family:'Noto Sans KR',sans-serif; }
+  .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+  /* WEBHOOK BAR */
+  .webhook-bar { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 18px; margin-bottom:20px; display:flex; gap:10px; align-items:center; }
+  .webhook-bar input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; color:var(--text); font-size:12px; font-family:'Noto Sans KR',sans-serif; outline:none; }
+  .webhook-bar input:focus { border-color:var(--accent); }
+  .wh-btn { padding:8px 14px; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .wh-save { background:var(--green); color:#fff; }
+  .wh-load { background:var(--accent); color:#fff; }
+
+  /* ORDER CARDS */
+  .orders-list { display:flex; flex-direction:column; gap:14px; }
+  .order-card { background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden; transition:border-color .2s; }
+  .order-card:hover { border-color:var(--accent); }
+  .order-head { padding:16px 20px; display:flex; align-items:center; gap:12px; cursor:pointer; user-select:none; flex-wrap:wrap; }
+  .order-num { font-size:13px; font-weight:700; color:var(--accent); min-width:80px; }
+  .order-name { font-size:15px; font-weight:700; flex:1; }
+  .order-amount { font-size:14px; font-weight:700; color:var(--yellow); }
+  .order-time { font-size:11px; color:var(--muted); }
+  .status-badge { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+  .status-badge.입금대기 { background:rgba(244,196,48,.15); color:var(--yellow); border:1px solid rgba(244,196,48,.3); }
+  .status-badge.입금완료 { background:rgba(46,204,113,.15); color:var(--green); border:1px solid rgba(46,204,113,.3); }
+  .status-badge.배송중   { background:rgba(79,142,247,.15); color:var(--accent); border:1px solid rgba(79,142,247,.3); }
+  .status-badge.배송완료 { background:rgba(107,112,153,.15); color:var(--muted); border:1px solid rgba(107,112,153,.3); }
+  .order-body { display:none; padding:0 20px 20px; border-top:1px solid var(--border); }
+  .order-body.open { display:block; }
+  .order-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; margin-bottom:16px; }
+  .info-item { background:var(--surface2); border-radius:10px; padding:12px 14px; }
+  .info-item .lbl { font-size:11px; color:var(--muted); margin-bottom:4px; }
+  .info-item .val { font-size:13px; font-weight:600; }
+  .items-box { background:var(--surface2); border-radius:10px; padding:12px 14px; margin-bottom:16px; }
+  .items-box .lbl { font-size:11px; color:var(--muted); margin-bottom:8px; }
+  .item-row { display:flex; justify-content:space-between; font-size:13px; padding:5px 0; border-bottom:1px solid var(--border); }
+  .item-row:last-child { border-bottom:none; font-weight:700; }
+  .item-row .price { color:var(--yellow); font-weight:700; }
+  .action-title { font-size:11px; color:var(--muted); margin-bottom:8px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+  .status-btns { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .st-btn { padding:8px 16px; border-radius:10px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:700; cursor:pointer; transition:all .2s; font-family:'Noto Sans KR',sans-serif; }
+  .st-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .st-btn.active-status { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .msg-btns { display:flex; gap:8px; flex-wrap:wrap; }
+  .msg-btn { display:flex; align-items:center; gap:6px; padding:10px 16px; border-radius:10px; border:none; font-size:13px; font-weight:700; cursor:pointer; font-family:'Noto Sans KR',sans-serif; transition:all .2s; text-decoration:none; }
+  .msg-btn.kakao { background:var(--kakao); color:#3A1D1D; }
+  .msg-btn.sms { background:var(--surface2); color:var(--text); border:1.5px solid var(--border); }
+  .msg-btn.sms:hover { border-color:var(--green); color:var(--green); }
+  .msg-btn.delivery { background:rgba(79,142,247,.15); color:var(--accent); border:1.5px solid rgba(79,142,247,.3); }
+  .msg-btn.delivery:hover { background:var(--accent); color:#fff; }
+
+  /* EMPTY / LOADING */
+  .empty { text-align:center; padding:60px 20px; color:var(--muted); }
+  .empty .icon { font-size:48px; margin-bottom:12px; display:block; }
+  .loading { text-align:center; padding:40px; color:var(--muted); }
+  .spinner { display:inline-block; width:20px; height:20px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .6s linear infinite; margin-right:8px; vertical-align:middle; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:#222; color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; font-weight:600; transition:transform .3s; z-index:999; white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  @media(max-width:600px) {
+    .stats-grid { grid-template-columns:repeat(2,1fr); }
+    .settings-grid { grid-template-columns:1fr; }
+    .price-grid { grid-template-columns:1fr 1fr; }
+    .order-info-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <span class="login-icon">🔐</span>
+    <h1>관리자 로그인</h1>
+    <p>월림마을 관리자 페이지</p>
+    <input class="pw-input" type="password" id="pw-input" placeholder="••••••" maxlength="10" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">로그인</button>
+    <div class="login-err" id="login-err">❌ 비밀번호가 틀렸습니다</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="admin-wrap">
+  <header class="admin-header">
+    <div class="logo"><span>🍈</span><span>월림마을 관리자</span></div>
+    <button class="logout-btn" onclick="doLogout()">로그아웃</button>
+  </header>
+
+  <div class="admin-main">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-total" style="color:var(--accent)">0</div><div class="stat-label">전체 주문</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-waiting" style="color:var(--yellow)">0</div><div class="stat-label">입금대기</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-paid" style="color:var(--green)">0</div><div class="stat-label">입금완료</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-shipping" style="color:var(--accent)">0</div><div class="stat-label">배송중</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('orders',this)">📋 주문 관리</button>
+      <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ 설정</button>
+    </div>
+
+    <!-- TAB: 주문관리 -->
+    <div class="tab-content active" id="tab-orders">
+      <div class="webhook-bar">
+        <span style="font-size:13px;color:var(--muted);white-space:nowrap">📡 Sheets URL</span>
+        <input type="text" id="admin-webhook" placeholder="https://script.google.com/macros/s/...">
+        <button class="wh-btn wh-save" onclick="saveAdminWebhook()">저장</button>
+        <button class="wh-btn wh-load" onclick="loadOrders()">불러오기</button>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setFilter('전체',this)">전체</button>
+        <button class="filter-btn" onclick="setFilter('입금대기',this)">입금대기</button>
+        <button class="filter-btn" onclick="setFilter('입금완료',this)">입금완료</button>
+        <button class="filter-btn" onclick="setFilter('배송중',this)">배송중</button>
+        <button class="filter-btn" onclick="setFilter('배송완료',this)">배송완료</button>
+      </div>
+      <div class="orders-list" id="orders-list">
+        <div class="loading"><span class="spinner"></span> Sheets URL 입력 후 불러오기를 눌러주세요</div>
+      </div>
+    </div>
+
+    <!-- TAB: 설정 -->
+    <div class="tab-content" id="tab-settings">
+
+      <!-- 상품 가격 설정 -->
+      <div class="section-title">💰 상품 가격 설정</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px;">
+        <div class="price-grid">
+          <div class="price-item">
+            <div class="name">🍈 파파야메론 5kg</div>
+            <input class="price-input" id="price-melon5" type="number" value="35000">
+          </div>
+          <div class="price-item">
+            <div class="name">🍈 파파야메론 10kg</div>
+            <input class="price-input" id="price-melon10" type="number" value="65000">
+          </div>
+          <div class="price-item">
+            <div class="name">🟡 참외 5kg</div>
+            <input class="price-input" id="price-chamoe5" type="number" value="45000">
+          </div>
+          <div class="price-item">
+            <div class="name">🟡 참외 10kg</div>
+            <input class="price-input" id="price-chamoe10" type="number" value="85000">
+          </div>
+        </div>
+        <button class="save-setting-btn" onclick="savePrices()" style="max-width:200px">💾 가격 저장</button>
+        <div class="setting-status" id="price-status"></div>
+        <div style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:10px;font-size:12px;color:var(--muted);line-height:1.7;">
+          ⚠️ 가격 변경 후 <b style="color:var(--text)">주문 사이트(index.html)도 직접 수정</b>해야 실제 반영됩니다.<br>
+          GitHub fruit-order → Index.html → 가격 부분 수정
+        </div>
+      </div>
+
+      <!-- 계좌 정보 설정 -->
+      <div class="section-title">🏦 계좌 정보 설정</div>
+      <div class="settings-grid">
+        <div class="setting-card">
+          <h3>💛 카카오뱅크 계좌</h3>
+          <div class="setting-row">
+            <div class="setting-label">은행명</div>
+            <input class="setting-input" id="bank-name" type="text" value="카카오뱅크">
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">계좌번호</div>
+            <input class="setting-input" id="bank-account" type="text" value="3333-26-3303493">
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">예금주</div>
+            <input class="setting-input" id="bank-holder" type="text" value="이효동">
+          </div>
+          <button class="save-setting-btn green" onclick="saveAccount()">💾 계좌 저장</button>
+          <div class="setting-status" id="account-status"></div>
+        </div>
+
+        <div class="setting-card">
+          <h3>💛 카카오페이 링크</h3>
+          <div class="setting-row">
+            <div class="setting-label">카카오페이 송금 링크</div>
+            <input class="setting-input" id="kakaopay-url" type="text" value="https://qr.kakaopay.com/FJEV4WtMy">
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7;">
+            카카오페이 앱 → 송금 → QR코드 → 내 QR 공유 링크
+          </div>
+          <button class="save-setting-btn" onclick="saveKakaoPay()" style="margin-top:14px">💾 링크 저장</button>
+          <div class="setting-status" id="kakaopay-status"></div>
+        </div>
+      </div>
+
+      <!-- 문자 템플릿 설정 -->
+      <div class="section-title">📱 문자 템플릿 설정</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px;">
+        <div class="setting-row">
+          <div class="setting-label" style="font-size:13px;color:var(--green);font-weight:700;margin-bottom:10px">✅ 입금확인 문자 템플릿</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">사용 가능한 변수: {이름} {상품} {금액}</div>
+          <textarea class="setting-input" id="sms-paid" rows="7" style="resize:vertical;line-height:1.8">[월림마을] 안녕하세요, {이름}님 🍈
+
+입금이 확인되었습니다 ✅
+
+• 주문 상품 : {상품}
+• 결제 금액 : {금액}원
+
+수확 스케줄에 따라 순차적으로
+배송 안내 드리겠습니다.
+
+감사합니다 😊</textarea>
+        </div>
+        <div class="setting-row" style="margin-top:16px">
+          <div class="setting-label" style="font-size:13px;color:var(--accent);font-weight:700;margin-bottom:10px">🚚 배송날짜 안내 문자 템플릿</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">사용 가능한 변수: {이름} {상품} {날짜} {주소}</div>
+          <textarea class="setting-input" id="sms-delivery" rows="9" style="resize:vertical;line-height:1.8">[월림마을] 안녕하세요, {이름}님 🍈
+
+주문하신 상품 배송 안내드립니다 🚚
+
+• 주문 상품 : {상품}
+• 배송 예정일 : {날짜}
+• 배송 주소 : {주소}
+
+신선하고 맛있게 드시길 바랍니다 😊
+
+감사합니다!</textarea>
+        </div>
+        <div style="margin-top:8px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--muted)">
+          💡 배송날짜는 문자 발송 전 날짜 입력 팝업이 나타납니다
+        </div>
+        <button class="save-setting-btn" onclick="saveSMSTemplates()" style="max-width:200px;margin-top:14px">💾 템플릿 저장</button>
+        <div class="setting-status" id="sms-status"></div>
+      </div>
+
+      <!-- 현재 설정 미리보기 -->
+      <div class="section-title">👁️ 현재 저장된 설정</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
+        <div id="current-settings" style="font-size:13px;color:var(--muted);line-height:2;">
+          저장된 설정을 불러오는 중...
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PW = '820523';
+const WH_KEY = 'admin_gs_webhook';
+let allOrders = [];
+let currentFilter = '전체';
+
+// ── LOGIN ──
+function doLogin() {
+  if (document.getElementById('pw-input').value === PW) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+  }
+}
+function doLogout() {
+  document.getElementById('login-wrap').style.display = 'flex';
+  document.getElementById('admin-wrap').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+}
+
+function initAdmin() {
+  const wh = localStorage.getItem(WH_KEY) || localStorage.getItem('gs_webhook') || '';
+  if (wh) document.getElementById('admin-webhook').value = wh;
+  loadSavedSettings();
+  loadSMSTemplates();
+}
+
+function loadSMSTemplates() {
+  const templates = JSON.parse(localStorage.getItem('admin_sms_templates')||'{}');
+  if (templates.paid)     document.getElementById('sms-paid').value     = templates.paid;
+  if (templates.delivery) document.getElementById('sms-delivery').value = templates.delivery;
+}
+
+// ── TABS ──
+function switchTab(name, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── SETTINGS ──
+function savePrices() {
+  const prices = {
+    melon5:  parseInt(document.getElementById('price-melon5').value),
+    melon10: parseInt(document.getElementById('price-melon10').value),
+    chamoe5: parseInt(document.getElementById('price-chamoe5').value),
+    chamoe10:parseInt(document.getElementById('price-chamoe10').value),
+  };
+  localStorage.setItem('admin_prices', JSON.stringify(prices));
+  const st = document.getElementById('price-status');
+  st.className = 'setting-status ok';
+  st.textContent = '✅ 저장 완료! (주문 사이트 Index.html도 별도 수정 필요)';
+  loadSavedSettings();
+  showToast('💰 가격 저장 완료!');
+}
+
+function saveAccount() {
+  const acc = {
+    bank: document.getElementById('bank-name').value.trim(),
+    account: document.getElementById('bank-account').value.trim(),
+    holder: document.getElementById('bank-holder').value.trim(),
+  };
+  localStorage.setItem('admin_account', JSON.stringify(acc));
+  const st = document.getElementById('account-status');
+  st.className = 'setting-status ok';
+  st.textContent = '✅ 저장 완료!';
+  loadSavedSettings();
+  showToast('🏦 계좌 정보 저장 완료!');
+}
+
+function saveKakaoPay() {
+  const url = document.getElementById('kakaopay-url').value.trim();
+  localStorage.setItem('admin_kakaopay', url);
+  const st = document.getElementById('kakaopay-status');
+  st.className = 'setting-status ok';
+  st.textContent = '✅ 저장 완료!';
+  loadSavedSettings();
+  showToast('💛 카카오페이 링크 저장 완료!');
+}
+
+function loadSavedSettings() {
+  const prices = JSON.parse(localStorage.getItem('admin_prices') || '{}');
+  const acc    = JSON.parse(localStorage.getItem('admin_account') || '{}');
+  const kpay   = localStorage.getItem('admin_kakaopay') || '';
+
+  if (prices.melon5)  document.getElementById('price-melon5').value  = prices.melon5;
+  if (prices.melon10) document.getElementById('price-melon10').value = prices.melon10;
+  if (prices.chamoe5) document.getElementById('price-chamoe5').value = prices.chamoe5;
+  if (prices.chamoe10)document.getElementById('price-chamoe10').value= prices.chamoe10;
+  if (acc.bank)       document.getElementById('bank-name').value     = acc.bank;
+  if (acc.account)    document.getElementById('bank-account').value  = acc.account;
+  if (acc.holder)     document.getElementById('bank-holder').value   = acc.holder;
+  if (kpay)           document.getElementById('kakaopay-url').value  = kpay;
+
+  const p = { melon5:prices.melon5||35000, melon10:prices.melon10||65000, chamoe5:prices.chamoe5||45000, chamoe10:prices.chamoe10||85000 };
+  const a = { bank:acc.bank||'카카오뱅크', account:acc.account||'3333-26-3303493', holder:acc.holder||'이효동' };
+
+  document.getElementById('current-settings').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div style="color:var(--yellow);font-weight:700;margin-bottom:8px">💰 현재 가격</div>
+        <div>🍈 파파야메론 5kg: <b style="color:var(--text)">${p.melon5.toLocaleString()}원</b></div>
+        <div>🍈 파파야메론 10kg: <b style="color:var(--text)">${p.melon10.toLocaleString()}원</b></div>
+        <div>🟡 참외 5kg: <b style="color:var(--text)">${p.chamoe5.toLocaleString()}원</b></div>
+        <div>🟡 참외 10kg: <b style="color:var(--text)">${p.chamoe10.toLocaleString()}원</b></div>
+      </div>
+      <div>
+        <div style="color:var(--green);font-weight:700;margin-bottom:8px">🏦 현재 계좌</div>
+        <div>은행: <b style="color:var(--text)">${a.bank}</b></div>
+        <div>계좌: <b style="color:var(--text)">${a.account}</b></div>
+        <div>예금주: <b style="color:var(--text)">${a.holder}</b></div>
+        ${kpay ? `<div style="margin-top:8px">💛 카카오페이: <b style="color:var(--kakao)">설정됨</b></div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+// ── WEBHOOK ──
+function saveAdminWebhook() {
+  const url = document.getElementById('admin-webhook').value.trim();
+  if (!url) return;
+  localStorage.setItem(WH_KEY, url);
+  localStorage.setItem('gs_webhook', url);
+  showToast('✅ URL 저장 완료!');
+}
+
+// ── LOAD ORDERS ──
+async function loadOrders() {
+  const url = document.getElementById('admin-webhook').value.trim();
+  if (!url) { showToast('⚠️ Sheets URL을 입력해 주세요'); return; }
+  document.getElementById('orders-list').innerHTML = '<div class="loading"><span class="spinner"></span> 불러오는 중...</div>';
+  try {
+    const res = await fetch(url + '?action=getOrders');
+    const data = await res.json();
+    allOrders = data.orders || getDemoOrders();
+  } catch(e) {
+    allOrders = getDemoOrders();
+    showToast('⚠️ 데모 데이터로 표시합니다');
+  }
+  renderOrders();
+  updateStats();
+}
+
+function getDemoOrders() {
+  return [
+    { orderNum:'#123456', orderTime:'2026. 4. 12. 오후 3:01', name:'홍길동', phone:'010-1234-5678', address:'서울 마포구 망원동 123', address2:'101호', items:'파파야메론 5kg x1박스', totalAmount:35000, paymentStatus:'입금대기', memo:'' },
+    { orderNum:'#234567', orderTime:'2026. 4. 12. 오후 4:00', name:'김철수', phone:'010-9876-5432', address:'부산 해운대구 우동 456', address2:'', items:'참외 10kg x1박스', totalAmount:85000, paymentStatus:'입금완료', memo:'문 앞에 놔주세요' },
+  ];
+}
+
+function renderOrders() {
+  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
+  const list = document.getElementById('orders-list');
+  if (!filtered.length) { list.innerHTML = '<div class="empty"><span class="icon">📭</span>해당 주문이 없습니다</div>'; return; }
+  list.innerHTML = filtered.map((o,i) => `
+    <div class="order-card" id="card-${i}">
+      <div class="order-head" onclick="toggleCard(${i})">
+        <span class="order-num">${o.orderNum}</span>
+        <span class="order-name">${o.name}</span>
+        <span class="status-badge ${o.paymentStatus}">${o.paymentStatus}</span>
+        <span class="order-amount">${Number(o.totalAmount).toLocaleString()}원</span>
+        <span class="order-time">${(o.orderTime||'').slice(0,13)}</span>
+      </div>
+      <div class="order-body" id="body-${i}">
+        <div class="order-info-grid">
+          <div class="info-item"><div class="lbl">이름</div><div class="val">${o.name}</div></div>
+          <div class="info-item"><div class="lbl">연락처</div><div class="val">${o.phone}</div></div>
+          <div class="info-item" style="grid-column:span 2"><div class="lbl">주소</div><div class="val">${o.address} ${o.address2||''}</div></div>
+          ${o.memo?`<div class="info-item" style="grid-column:span 2"><div class="lbl">배송 메모</div><div class="val">${o.memo}</div></div>`:''}
+        </div>
+        <div class="items-box">
+          <div class="lbl">주문 상품</div>
+          ${(o.items||'').split(',').map(it=>`<div class="item-row"><span>${it.trim()}</span></div>`).join('')}
+          <div class="item-row"><span style="font-weight:700">합계</span><span class="price">${Number(o.totalAmount).toLocaleString()}원</span></div>
+        </div>
+        <div class="action-title">📋 상태 변경</div>
+        <div class="status-btns">
+          ${['입금대기','입금완료','배송중','배송완료'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')">${s}</button>`).join('')}
+        </div>
+        <div class="action-title">💬 문자 발송</div>
+        <div class="msg-btns">
+          <a class="msg-btn sms" href="${makeSMSLink(o,'입금확인')}">✅ 입금확인 문자</a>
+          <a class="msg-btn sms delivery" href="${makeSMSLink(o,'배송안내')}">🚚 배송날짜 안내 문자</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(i) { document.getElementById('body-'+i).classList.toggle('open'); }
+
+async function changeStatus(i, status) {
+  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
+  const order = filtered[i];
+  const realIdx = allOrders.findIndex(o=>o.orderNum===order.orderNum);
+  allOrders[realIdx].paymentStatus = status;
+  const url = localStorage.getItem(WH_KEY);
+  if (url) {
+    try { await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'updatePayment',orderNum:order.orderNum,status})}); }
+    catch(e){ console.warn(e); }
+  }
+  renderOrders(); updateStats();
+  showToast(`✅ ${order.name} → ${status}`);
+}
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderOrders();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent    = allOrders.length;
+  document.getElementById('stat-waiting').textContent  = allOrders.filter(o=>o.paymentStatus==='입금대기').length;
+  document.getElementById('stat-paid').textContent     = allOrders.filter(o=>o.paymentStatus==='입금완료').length;
+  document.getElementById('stat-shipping').textContent = allOrders.filter(o=>o.paymentStatus==='배송중').length;
+}
+
+function makeSMSLink(o, type) {
+  const templates = JSON.parse(localStorage.getItem('admin_sms_templates')||'{}');
+  let msg = '';
+  if (type === '입금확인') {
+    const tpl = templates.paid || '[월림마을] 안녕하세요, {이름}님 🍈\n\n입금이 확인되었습니다 ✅\n\n• 주문 상품 : {상품}\n• 결제 금액 : {금액}원\n\n수확 스케줄에 따라 순차적으로\n배송 안내 드리겠습니다.\n\n감사합니다 😊';
+    msg = tpl
+      .replace(/{이름}/g, o.name)
+      .replace(/{상품}/g, o.items)
+      .replace(/{금액}/g, Number(o.totalAmount).toLocaleString());
+  } else {
+    const tpl = templates.delivery || '[월림마을] 안녕하세요, {이름}님 🍈\n\n주문하신 상품 배송 안내드립니다 🚚\n\n• 주문 상품 : {상품}\n• 배송 예정일 : {날짜}\n• 배송 주소 : {주소}\n\n신선하고 맛있게 드시길 바랍니다 😊\n\n감사합니다!';
+    const date = prompt(`${o.name}님 배송 예정일을 입력해 주세요\n예: 4월 15일(화)`, '');
+    if (!date) return '#';
+    const addr = `${o.address} ${o.address2||''}`.trim();
+    msg = tpl
+      .replace(/{이름}/g, o.name)
+      .replace(/{상품}/g, o.items)
+      .replace(/{날짜}/g, date)
+      .replace(/{주소}/g, addr);
+  }
+  return `sms:${o.phone.replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
+}
+
+function saveSMSTemplates() {
+  const templates = {
+    paid:     document.getElementById('sms-paid').value,
+    delivery: document.getElementById('sms-delivery').value,
+  };
+  localStorage.setItem('admin_sms_templates', JSON.stringify(templates));
+  const st = document.getElementById('sms-status');
+  st.className = 'setting-status ok';
+  st.textContent = '✅ 템플릿 저장 완료!';
+  showToast('📱 문자 템플릿 저장 완료!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+window.addEventListener('load', ()=>{
+  const wh = localStorage.getItem(WH_KEY)||localStorage.getItem('gs_webhook')||'';
+  if (wh) document.getElementById('admin-webhook').value = wh;
+  loadSavedSettings();
+});
+</script>
+</body>
+</html>
