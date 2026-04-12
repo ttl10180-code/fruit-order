@@ -596,14 +596,25 @@ function updateStats() {
   document.getElementById('stat-shipping').textContent = allOrders.filter(o=>o.paymentStatus==='배송중').length;
 }
 
+function getItemsText(o) {
+  if (o.items && o.items.trim() && o.items !== 'undefined') return o.items;
+  const parts = [];
+  if (Number(o.melon5)  > 0) parts.push(`파파야메론 5kg x${o.melon5}박스`);
+  if (Number(o.melon10) > 0) parts.push(`파파야메론 10kg x${o.melon10}박스`);
+  if (Number(o.chamoe5) > 0) parts.push(`참외 5kg x${o.chamoe5}박스`);
+  if (Number(o.chamoe10)> 0) parts.push(`참외 10kg x${o.chamoe10}박스`);
+  return parts.join(', ') || '주문 상품';
+}
+
 function makeSMSLink(o, type) {
   const templates = JSON.parse(localStorage.getItem('admin_sms_templates')||'{}');
+  const items = getItemsText(o);
   let msg = '';
   if (type === '입금확인') {
     const tpl = templates.paid || '[월림마을] 안녕하세요, {이름}님 🍈\n\n입금이 확인되었습니다 ✅\n\n• 주문 상품 : {상품}\n• 결제 금액 : {금액}원\n\n수확 스케줄에 따라 순차적으로\n배송 안내 드리겠습니다.\n\n감사합니다 😊';
     msg = tpl
       .replace(/{이름}/g, o.name)
-      .replace(/{상품}/g, o.items)
+      .replace(/{상품}/g, items)
       .replace(/{금액}/g, Number(o.totalAmount).toLocaleString());
   }
   return `sms:${o.phone.replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
@@ -648,7 +659,7 @@ function confirmDeliveryDate() {
   }
   const msg = tpl
     .replace(/{이름}/g, o.name)
-    .replace(/{상품}/g, o.items)
+    .replace(/{상품}/g, getItemsText(o))
     .replace(/{날짜}/g, date)
     .replace(/{주소}/g, addr)
     .replace(/{배송사정보}/g, carrierInfo);
