@@ -14,6 +14,7 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
+  /* LOGIN */
   .login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
   .login-card { background:var(--surface); border:1px solid var(--border); border-radius:24px; padding:48px 36px; width:100%; max-width:380px; text-align:center; }
   .login-icon { font-size:52px; margin-bottom:16px; display:block; }
@@ -25,6 +26,7 @@
   .login-btn:hover { opacity:.9; }
   .login-err { font-size:13px; color:var(--red); margin-top:10px; display:none; }
 
+  /* ADMIN */
   .admin-wrap { display:none; }
   header.admin-header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
   .admin-header .logo { display:flex; align-items:center; gap:10px; }
@@ -34,6 +36,7 @@
 
   .admin-main { max-width:960px; margin:0 auto; padding:28px 16px 60px; }
 
+  /* TABS */
   .tab-nav { display:flex; gap:8px; margin-bottom:28px; border-bottom:1px solid var(--border); padding-bottom:0; }
   .tab-btn { padding:10px 20px; background:transparent; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Noto Sans KR',sans-serif; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .2s; }
   .tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
@@ -41,13 +44,16 @@
   .tab-content.active { display:block; animation:fadeUp .3s ease; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
+  /* STATS */
   .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px; }
   .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px 16px; text-align:center; }
   .stat-num { font-family:'Noto Serif KR',serif; font-size:26px; font-weight:900; margin-bottom:4px; }
   .stat-label { font-size:11px; color:var(--muted); }
 
+  /* SECTION */
   .section-title { font-family:'Noto Serif KR',serif; font-size:16px; font-weight:700; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
 
+  /* SETTINGS CARDS */
   .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:28px; }
   .setting-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; }
   .setting-card h3 { font-size:14px; font-weight:700; margin-bottom:16px; color:var(--text); display:flex; align-items:center; gap:8px; }
@@ -62,16 +68,19 @@
   .setting-status.ok { color:var(--green); }
   .setting-status.err { color:var(--red); }
 
+  /* PRICE CARDS */
   .price-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
   .price-item { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px; }
   .price-item .name { font-size:13px; color:var(--muted); margin-bottom:8px; }
   .price-item .price-input { width:100%; padding:9px 12px; background:var(--surface); border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-size:14px; font-weight:700; font-family:'Noto Sans KR',sans-serif; outline:none; transition:border-color .2s; }
   .price-item .price-input:focus { border-color:var(--yellow); }
 
+  /* FILTERS */
   .filter-row { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
   .filter-btn { padding:7px 16px; border-radius:20px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; font-family:'Noto Sans KR',sans-serif; }
   .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
 
+  /* WEBHOOK BAR */
   .webhook-bar { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 18px; margin-bottom:20px; display:flex; gap:10px; align-items:center; }
   .webhook-bar input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; color:var(--text); font-size:12px; font-family:'Noto Sans KR',sans-serif; outline:none; }
   .webhook-bar input:focus { border-color:var(--accent); }
@@ -79,6 +88,7 @@
   .wh-save { background:var(--green); color:#fff; }
   .wh-load { background:var(--accent); color:#fff; }
 
+  /* ORDER CARDS */
   .orders-list { display:flex; flex-direction:column; gap:14px; }
   .order-card { background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden; transition:border-color .2s; }
   .order-card:hover { border-color:var(--accent); }
@@ -90,7 +100,7 @@
   .status-badge { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
   .status-badge.입금대기 { background:rgba(244,196,48,.15); color:var(--yellow); border:1px solid rgba(244,196,48,.3); }
   .status-badge.입금완료 { background:rgba(46,204,113,.15); color:var(--green); border:1px solid rgba(46,204,113,.3); }
-  .status-badge.배송중 { background:rgba(79,142,247,.15); color:var(--accent); border:1px solid rgba(79,142,247,.3); }
+  .status-badge.배송중   { background:rgba(79,142,247,.15); color:var(--accent); border:1px solid rgba(79,142,247,.3); }
   .status-badge.배송완료 { background:rgba(107,112,153,.15); color:var(--muted); border:1px solid rgba(107,112,153,.3); }
   .order-body { display:none; padding:0 20px 20px; border-top:1px solid var(--border); }
   .order-body.open { display:block; }
@@ -116,12 +126,14 @@
   .msg-btn.delivery { background:rgba(79,142,247,.15); color:var(--accent); border:1.5px solid rgba(79,142,247,.3); }
   .msg-btn.delivery:hover { background:var(--accent); color:#fff; }
 
+  /* EMPTY / LOADING */
   .empty { text-align:center; padding:60px 20px; color:var(--muted); }
   .empty .icon { font-size:48px; margin-bottom:12px; display:block; }
   .loading { text-align:center; padding:40px; color:var(--muted); }
   .spinner { display:inline-block; width:20px; height:20px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .6s linear infinite; margin-right:8px; vertical-align:middle; }
   @keyframes spin { to{transform:rotate(360deg)} }
 
+  /* DATE MODAL */
   .date-modal-overlay {
     display:none; position:fixed; inset:0;
     background:rgba(0,0,0,.6); backdrop-filter:blur(4px);
@@ -146,6 +158,7 @@
   .date-modal-cancel { background:var(--surface2); color:var(--muted); }
   .date-modal-confirm { background:var(--accent); color:#fff; }
 
+  /* TOAST */
   .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:#222; color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; font-weight:600; transition:transform .3s; z-index:999; white-space:nowrap; }
   .toast.show { transform:translateX(-50%) translateY(0); }
 
@@ -159,6 +172,7 @@
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="login-wrap" id="login-wrap">
   <div class="login-card">
     <span class="login-icon">🔐</span>
@@ -170,6 +184,7 @@
   </div>
 </div>
 
+<!-- ADMIN -->
 <div class="admin-wrap" id="admin-wrap">
   <header class="admin-header">
     <div class="logo"><span>🍈</span><span>월림마을 관리자</span></div>
@@ -177,6 +192,8 @@
   </header>
 
   <div class="admin-main">
+
+    <!-- STATS -->
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-num" id="stat-total" style="color:var(--accent)">0</div><div class="stat-label">전체 주문</div></div>
       <div class="stat-card"><div class="stat-num" id="stat-waiting" style="color:var(--yellow)">0</div><div class="stat-label">입금대기</div></div>
@@ -184,11 +201,13 @@
       <div class="stat-card"><div class="stat-num" id="stat-shipping" style="color:var(--accent)">0</div><div class="stat-label">배송중</div></div>
     </div>
 
+    <!-- TABS -->
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('orders',this)">📋 주문 관리</button>
       <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ 설정</button>
     </div>
 
+    <!-- TAB: 주문관리 -->
     <div class="tab-content active" id="tab-orders">
       <div class="webhook-bar">
         <span style="font-size:13px;color:var(--muted);white-space:nowrap">📡 Sheets URL</span>
@@ -208,7 +227,10 @@
       </div>
     </div>
 
+    <!-- TAB: 설정 -->
     <div class="tab-content" id="tab-settings">
+
+      <!-- 상품 가격 설정 -->
       <div class="section-title">💰 상품 가격 설정</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px;">
         <div class="price-grid">
@@ -237,6 +259,7 @@
         </div>
       </div>
 
+      <!-- 계좌 정보 설정 -->
       <div class="section-title">🏦 계좌 정보 설정</div>
       <div class="settings-grid">
         <div class="setting-card">
@@ -271,6 +294,7 @@
         </div>
       </div>
 
+      <!-- 문자 템플릿 설정 -->
       <div class="section-title">📱 문자 템플릿 설정</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px;">
         <div class="setting-row">
@@ -310,12 +334,14 @@
         <div class="setting-status" id="sms-status"></div>
       </div>
 
+      <!-- 현재 설정 미리보기 -->
       <div class="section-title">👁️ 현재 저장된 설정</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;">
         <div id="current-settings" style="font-size:13px;color:var(--muted);line-height:2;">
           저장된 설정을 불러오는 중...
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -336,7 +362,6 @@
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -345,86 +370,7 @@ const WH_KEY = 'admin_gs_webhook';
 let allOrders = [];
 let currentFilter = '전체';
 
-function getValueByKeys(obj, keys) {
-  if (!obj || typeof obj !== 'object') return '';
-
-  for (const key of keys) {
-    if (obj[key] != null && obj[key] !== '') return obj[key];
-  }
-
-  const objKeys = Object.keys(obj);
-  for (const realKey of objKeys) {
-    const normalizedReal = String(realKey).replace(/\s/g, '').toLowerCase();
-    for (const key of keys) {
-      const normalizedTarget = String(key).replace(/\s/g, '').toLowerCase();
-      if (normalizedReal === normalizedTarget && obj[realKey] != null && obj[realKey] !== '') {
-        return obj[realKey];
-      }
-    }
-  }
-
-  return '';
-}
-
-function getOrderItemsText(o) {
-  if (Array.isArray(o)) {
-    const candidates = [o[5], o[6], o[7], o[8], o[9]];
-    const found = candidates.find(v => v != null && String(v).trim() !== '');
-    return String(found || '').trim();
-  }
-
-  const value = getValueByKeys(o, [
-    'items',
-    'item',
-    'product',
-    'products',
-    'orderItems',
-    'order_items',
-    '주문상품',
-    '주문 상품',
-    '상품',
-    '상품명',
-    '구매상품',
-    '품목'
-  ]);
-
-  if (Array.isArray(value)) return value.join(', ');
-  if (typeof value === 'object' && value !== null) return JSON.stringify(value);
-
-  return String(value || '').trim();
-}
-
-function normalizeOrder(o) {
-  if (Array.isArray(o)) {
-    return {
-      orderNum: o[0] || '',
-      orderTime: o[1] || '',
-      name: o[2] || '',
-      phone: o[3] || '',
-      address: o[4] || '',
-      address2: o[8] || '',
-      items: getOrderItemsText(o),
-      totalAmount: Number(o[6] || 0),
-      paymentStatus: o[7] || '입금대기',
-      memo: o[9] || ''
-    };
-  }
-
-  return {
-    ...o,
-    orderNum: getValueByKeys(o, ['orderNum','주문번호','주문 번호']) || '',
-    orderTime: getValueByKeys(o, ['orderTime','주문일시','주문시간','주문 일시']) || '',
-    name: getValueByKeys(o, ['name','이름','주문자','주문자명']) || '',
-    phone: getValueByKeys(o, ['phone','연락처','전화번호','휴대폰']) || '',
-    address: getValueByKeys(o, ['address','주소','배송주소','배송 주소']) || '',
-    address2: getValueByKeys(o, ['address2','상세주소','상세 주소']) || '',
-    items: getOrderItemsText(o),
-    totalAmount: Number(getValueByKeys(o, ['totalAmount','금액','결제금액','총금액','합계']) || 0),
-    paymentStatus: getValueByKeys(o, ['paymentStatus','상태','결제상태','결제 상태']) || '입금대기',
-    memo: getValueByKeys(o, ['memo','메모','배송메모','배송 메모']) || ''
-  };
-}
-
+// ── LOGIN ──
 function doLogin() {
   if (document.getElementById('pw-input').value === PW) {
     document.getElementById('login-wrap').style.display = 'none';
@@ -435,7 +381,6 @@ function doLogin() {
     document.getElementById('pw-input').value = '';
   }
 }
-
 function doLogout() {
   document.getElementById('login-wrap').style.display = 'flex';
   document.getElementById('admin-wrap').style.display = 'none';
@@ -450,24 +395,26 @@ function initAdmin() {
 }
 
 function loadSMSTemplates() {
-  const templates = JSON.parse(localStorage.getItem('admin_sms_templates') || '{}');
-  if (templates.paid) document.getElementById('sms-paid').value = templates.paid;
+  const templates = JSON.parse(localStorage.getItem('admin_sms_templates')||'{}');
+  if (templates.paid)     document.getElementById('sms-paid').value     = templates.paid;
   if (templates.delivery) document.getElementById('sms-delivery').value = templates.delivery;
 }
 
+// ── TABS ──
 function switchTab(name, el) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
   el.classList.add('active');
 }
 
+// ── SETTINGS ──
 function savePrices() {
   const prices = {
-    melon5: parseInt(document.getElementById('price-melon5').value),
+    melon5:  parseInt(document.getElementById('price-melon5').value),
     melon10: parseInt(document.getElementById('price-melon10').value),
     chamoe5: parseInt(document.getElementById('price-chamoe5').value),
-    chamoe10: parseInt(document.getElementById('price-chamoe10').value),
+    chamoe10:parseInt(document.getElementById('price-chamoe10').value),
   };
   localStorage.setItem('admin_prices', JSON.stringify(prices));
   const st = document.getElementById('price-status');
@@ -503,29 +450,20 @@ function saveKakaoPay() {
 
 function loadSavedSettings() {
   const prices = JSON.parse(localStorage.getItem('admin_prices') || '{}');
-  const acc = JSON.parse(localStorage.getItem('admin_account') || '{}');
-  const kpay = localStorage.getItem('admin_kakaopay') || '';
+  const acc    = JSON.parse(localStorage.getItem('admin_account') || '{}');
+  const kpay   = localStorage.getItem('admin_kakaopay') || '';
 
-  if (prices.melon5) document.getElementById('price-melon5').value = prices.melon5;
+  if (prices.melon5)  document.getElementById('price-melon5').value  = prices.melon5;
   if (prices.melon10) document.getElementById('price-melon10').value = prices.melon10;
   if (prices.chamoe5) document.getElementById('price-chamoe5').value = prices.chamoe5;
-  if (prices.chamoe10) document.getElementById('price-chamoe10').value = prices.chamoe10;
-  if (acc.bank) document.getElementById('bank-name').value = acc.bank;
-  if (acc.account) document.getElementById('bank-account').value = acc.account;
-  if (acc.holder) document.getElementById('bank-holder').value = acc.holder;
-  if (kpay) document.getElementById('kakaopay-url').value = kpay;
+  if (prices.chamoe10)document.getElementById('price-chamoe10').value= prices.chamoe10;
+  if (acc.bank)       document.getElementById('bank-name').value     = acc.bank;
+  if (acc.account)    document.getElementById('bank-account').value  = acc.account;
+  if (acc.holder)     document.getElementById('bank-holder').value   = acc.holder;
+  if (kpay)           document.getElementById('kakaopay-url').value  = kpay;
 
-  const p = {
-    melon5: prices.melon5 || 35000,
-    melon10: prices.melon10 || 65000,
-    chamoe5: prices.chamoe5 || 45000,
-    chamoe10: prices.chamoe10 || 85000
-  };
-  const a = {
-    bank: acc.bank || '카카오뱅크',
-    account: acc.account || '3333-26-3303493',
-    holder: acc.holder || '이효동'
-  };
+  const p = { melon5:prices.melon5||35000, melon10:prices.melon10||65000, chamoe5:prices.chamoe5||45000, chamoe10:prices.chamoe10||85000 };
+  const a = { bank:acc.bank||'카카오뱅크', account:acc.account||'3333-26-3303493', holder:acc.holder||'이효동' };
 
   document.getElementById('current-settings').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -547,6 +485,7 @@ function loadSavedSettings() {
   `;
 }
 
+// ── WEBHOOK ──
 function saveAdminWebhook() {
   const url = document.getElementById('admin-webhook').value.trim();
   if (!url) return;
@@ -555,27 +494,19 @@ function saveAdminWebhook() {
   showToast('✅ URL 저장 완료!');
 }
 
+// ── LOAD ORDERS ──
 async function loadOrders() {
   const url = document.getElementById('admin-webhook').value.trim();
-  if (!url) {
-    showToast('⚠️ Sheets URL을 입력해 주세요');
-    return;
-  }
-
+  if (!url) { showToast('⚠️ Sheets URL을 입력해 주세요'); return; }
   document.getElementById('orders-list').innerHTML = '<div class="loading"><span class="spinner"></span> 불러오는 중...</div>';
-
   try {
     const res = await fetch(url + '?action=getOrders');
     const data = await res.json();
-    allOrders = (data.orders || getDemoOrders()).map(normalizeOrder);
-    console.log('orders:', allOrders);
-    console.log('first order:', allOrders[0]);
-  } catch (e) {
-    allOrders = getDemoOrders().map(normalizeOrder);
+    allOrders = data.orders || getDemoOrders();
+  } catch(e) {
+    allOrders = getDemoOrders();
     showToast('⚠️ 데모 데이터로 표시합니다');
-    console.log('demo orders:', allOrders);
   }
-
   renderOrders();
   updateStats();
 }
@@ -588,149 +519,108 @@ function getDemoOrders() {
 }
 
 function renderOrders() {
-  const filtered = currentFilter === '전체'
-    ? allOrders
-    : allOrders.filter(o => o.paymentStatus === currentFilter);
-
+  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
   const list = document.getElementById('orders-list');
-
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty"><span class="icon">📭</span>해당 주문이 없습니다</div>';
-    return;
-  }
-
-  list.innerHTML = filtered.map((o, i) => `
+  if (!filtered.length) { list.innerHTML = '<div class="empty"><span class="icon">📭</span>해당 주문이 없습니다</div>'; return; }
+  list.innerHTML = filtered.map((o,i) => `
     <div class="order-card" id="card-${i}">
       <div class="order-head" onclick="toggleCard(${i})">
         <span class="order-num">${o.orderNum}</span>
         <span class="order-name">${o.name}</span>
         <span class="status-badge ${o.paymentStatus}">${o.paymentStatus}</span>
         <span class="order-amount">${Number(o.totalAmount).toLocaleString()}원</span>
-        <span class="order-time">${(o.orderTime || '').slice(0, 13)}</span>
+        <span class="order-time">${(o.orderTime||'').slice(0,13)}</span>
       </div>
       <div class="order-body" id="body-${i}">
         <div class="order-info-grid" style="margin-top:16px;margin-bottom:16px;">
           <div class="info-item"><div class="lbl">이름</div><div class="val">${o.name}</div></div>
           <div class="info-item"><div class="lbl">연락처</div><div class="val">${o.phone}</div></div>
-          <div class="info-item" style="grid-column:span 2"><div class="lbl">주소</div><div class="val">${o.address} ${o.address2 || ''}</div></div>
+          <div class="info-item" style="grid-column:span 2"><div class="lbl">주소</div><div class="val">${o.address} ${o.address2||''}</div></div>
           ${o.memo ? `<div class="info-item" style="grid-column:span 2"><div class="lbl">배송 메모</div><div class="val">${o.memo}</div></div>` : ''}
         </div>
-
         <div class="items-box" style="margin-bottom:16px;">
           <div class="lbl">주문 상품</div>
-          ${String(o.items || '')
-            .split(/\n|,/)
-            .filter(it => String(it).trim())
-            .map(it => `<div class="item-row"><span>${String(it).trim()}</span></div>`)
-            .join('') || `<div class="item-row"><span>상품 정보 없음</span></div>`}
-          <div class="item-row">
-            <span style="font-weight:700">합계</span>
-            <span class="price">${Number(o.totalAmount).toLocaleString()}원</span>
-          </div>
+          ${(()=>{
+            if (o.items && o.items.trim()) {
+              return o.items.split(',').map(it=>`<div class="item-row"><span>${it.trim()}</span></div>`).join('');
+            }
+            let rows = '';
+            if (Number(o.melon5)  > 0) rows += `<div class="item-row"><span>🍈 파파야메론 5kg × ${o.melon5}박스</span></div>`;
+            if (Number(o.melon10) > 0) rows += `<div class="item-row"><span>🍈 파파야메론 10kg × ${o.melon10}박스</span></div>`;
+            if (Number(o.chamoe5) > 0) rows += `<div class="item-row"><span>🟡 참외 5kg × ${o.chamoe5}박스</span></div>`;
+            if (Number(o.chamoe10)> 0) rows += `<div class="item-row"><span>🟡 참외 10kg × ${o.chamoe10}박스</span></div>`;
+            return rows || '<div class="item-row"><span style="color:var(--muted)">상품 정보 없음</span></div>';
+          })()}
+          <div class="item-row"><span style="font-weight:700">합계</span><span class="price">${Number(o.totalAmount).toLocaleString()}원</span></div>
         </div>
-
         <div class="action-title" style="margin-bottom:8px;">📋 상태 변경</div>
         <div class="status-btns" style="margin-bottom:16px;">
-          ${['입금대기','입금완료','배송중','배송완료'].map(s => `
-            <button class="st-btn ${o.paymentStatus === s ? 'active-status' : ''}" onclick="changeStatus(${i},'${s}')">${s}</button>
-          `).join('')}
+          ${['입금대기','입금완료','배송중','배송완료'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')">${s}</button>`).join('')}
         </div>
-
         <div class="action-title" style="margin-bottom:8px;">💬 문자 발송</div>
         <div class="msg-btns">
-          <a class="msg-btn sms" href="${makeSMSLink(o, '입금확인')}">✅ 입금확인 문자</a>
+          <a class="msg-btn sms" href="${makeSMSLink(o,'입금확인')}">✅ 입금확인 문자</a>
           <button class="msg-btn sms delivery" onclick="sendDeliverySMS(${i})" style="cursor:pointer">🚚 배송날짜 안내 문자</button>
         </div>
       </div>
     </div>
   `).join('');
 }
-
-function toggleCard(i) {
-  document.getElementById('body-' + i).classList.toggle('open');
-}
+function toggleCard(i) { document.getElementById('body-'+i).classList.toggle('open'); }
 
 async function changeStatus(i, status) {
-  const filtered = currentFilter === '전체'
-    ? allOrders
-    : allOrders.filter(o => o.paymentStatus === currentFilter);
-
+  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
   const order = filtered[i];
-  const realIdx = allOrders.findIndex(o => o.orderNum === order.orderNum);
-
-  if (realIdx === -1) return;
-
+  const realIdx = allOrders.findIndex(o=>o.orderNum===order.orderNum);
   allOrders[realIdx].paymentStatus = status;
-
   const url = localStorage.getItem(WH_KEY);
   if (url) {
-    try {
-      await fetch(url, {
-        method:'POST',
-        mode:'no-cors',
-        headers:{ 'Content-Type':'application/json' },
-        body:JSON.stringify({
-          action:'updatePayment',
-          orderNum:order.orderNum,
-          status
-        })
-      });
-    } catch(e) {
-      console.warn(e);
-    }
+    try { await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'updatePayment',orderNum:order.orderNum,status})}); }
+    catch(e){ console.warn(e); }
   }
-
-  renderOrders();
-  updateStats();
+  renderOrders(); updateStats();
   showToast(`✅ ${order.name} → ${status}`);
 }
 
 function setFilter(f, el) {
   currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderOrders();
 }
 
 function updateStats() {
-  document.getElementById('stat-total').textContent = allOrders.length;
-  document.getElementById('stat-waiting').textContent = allOrders.filter(o => o.paymentStatus === '입금대기').length;
-  document.getElementById('stat-paid').textContent = allOrders.filter(o => o.paymentStatus === '입금완료').length;
-  document.getElementById('stat-shipping').textContent = allOrders.filter(o => o.paymentStatus === '배송중').length;
+  document.getElementById('stat-total').textContent    = allOrders.length;
+  document.getElementById('stat-waiting').textContent  = allOrders.filter(o=>o.paymentStatus==='입금대기').length;
+  document.getElementById('stat-paid').textContent     = allOrders.filter(o=>o.paymentStatus==='입금완료').length;
+  document.getElementById('stat-shipping').textContent = allOrders.filter(o=>o.paymentStatus==='배송중').length;
 }
 
 function makeSMSLink(o, type) {
-  const templates = JSON.parse(localStorage.getItem('admin_sms_templates') || '{}');
+  const templates = JSON.parse(localStorage.getItem('admin_sms_templates')||'{}');
   let msg = '';
-
   if (type === '입금확인') {
     const tpl = templates.paid || '[월림마을] 안녕하세요, {이름}님 🍈\n\n입금이 확인되었습니다 ✅\n\n• 주문 상품 : {상품}\n• 결제 금액 : {금액}원\n\n수확 스케줄에 따라 순차적으로\n배송 안내 드리겠습니다.\n\n감사합니다 😊';
     msg = tpl
       .replace(/{이름}/g, o.name)
-      .replace(/{상품}/g, String(o.items || ''))
+      .replace(/{상품}/g, o.items)
       .replace(/{금액}/g, Number(o.totalAmount).toLocaleString());
   }
-
-  return `sms:${String(o.phone || '').replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
+  return `sms:${o.phone.replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
 }
 
 let pendingDeliveryIdx = null;
 
 function sendDeliverySMS(i) {
-  const filtered = currentFilter === '전체'
-    ? allOrders
-    : allOrders.filter(o => o.paymentStatus === currentFilter);
-
+  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
   const o = filtered[i];
   if (!o) return;
-
   pendingDeliveryIdx = i;
   document.getElementById('date-modal-name').textContent = o.name + '님 배송 정보 입력';
   document.getElementById('date-input').value = '';
   document.getElementById('carrier-input').value = '';
   document.getElementById('tracking-input').value = '';
   document.getElementById('date-modal-overlay').classList.add('show');
-
   setTimeout(() => document.getElementById('date-input').focus(), 100);
 }
 
@@ -741,50 +631,34 @@ function closeDateModal() {
 
 function confirmDeliveryDate() {
   const date = document.getElementById('date-input').value.trim();
-  if (!date) {
-    document.getElementById('date-input').focus();
-    return;
-  }
-
-  const carrier = document.getElementById('carrier-input').value.trim();
+  if (!date) { document.getElementById('date-input').focus(); return; }
+  const carrier  = document.getElementById('carrier-input').value.trim();
   const tracking = document.getElementById('tracking-input').value.trim();
-
-  const filtered = currentFilter === '전체'
-    ? allOrders
-    : allOrders.filter(o => o.paymentStatus === currentFilter);
-
+  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
   const o = filtered[pendingDeliveryIdx];
-  if (!o) {
-    closeDateModal();
-    return;
-  }
-
-  const templates = JSON.parse(localStorage.getItem('admin_sms_templates') || '{}');
+  if (!o) { closeDateModal(); return; }
+  const templates = JSON.parse(localStorage.getItem('admin_sms_templates')||'{}');
   const tpl = templates.delivery || '[월림마을] 안녕하세요, {이름}님 🍈\n\n주문하신 상품 배송 안내드립니다 🚚\n\n• 주문 상품 : {상품}\n• 배송 예정일 : {날짜}\n• 배송 주소 : {주소}{배송사정보}\n\n신선하고 맛있게 드시길 바랍니다 😊\n\n감사합니다!';
-
-  const addr = `${o.address} ${o.address2 || ''}`.trim();
-
+  const addr = `${o.address} ${o.address2||''}`.trim();
   let carrierInfo = '';
   if (carrier || tracking) {
     carrierInfo = '\n';
-    if (carrier) carrierInfo += `\n• 배송사 : ${carrier}`;
+    if (carrier)  carrierInfo += `\n• 배송사 : ${carrier}`;
     if (tracking) carrierInfo += `\n• 송장번호 : ${tracking}`;
   }
-
   const msg = tpl
     .replace(/{이름}/g, o.name)
-    .replace(/{상품}/g, String(o.items || ''))
+    .replace(/{상품}/g, o.items)
     .replace(/{날짜}/g, date)
     .replace(/{주소}/g, addr)
     .replace(/{배송사정보}/g, carrierInfo);
-
   closeDateModal();
-  window.location.href = `sms:${String(o.phone || '').replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
+  window.location.href = `sms:${o.phone.replace(/-/g,'')}?body=${encodeURIComponent(msg)}`;
 }
 
 function saveSMSTemplates() {
   const templates = {
-    paid: document.getElementById('sms-paid').value,
+    paid:     document.getElementById('sms-paid').value,
     delivery: document.getElementById('sms-delivery').value,
   };
   localStorage.setItem('admin_sms_templates', JSON.stringify(templates));
@@ -796,13 +670,12 @@ function saveSMSTemplates() {
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
 }
 
-window.addEventListener('load', () => {
-  const wh = localStorage.getItem(WH_KEY) || localStorage.getItem('gs_webhook') || '';
+window.addEventListener('load', ()=>{
+  const wh = localStorage.getItem(WH_KEY)||localStorage.getItem('gs_webhook')||'';
   if (wh) document.getElementById('admin-webhook').value = wh;
   loadSavedSettings();
 });
