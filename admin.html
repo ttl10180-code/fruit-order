@@ -80,6 +80,27 @@
   .filter-btn { padding:7px 16px; border-radius:20px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; font-family:'Noto Sans KR',sans-serif; }
   .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
 
+  /* DATE FILTER */
+  .date-filter-bar {
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:12px 16px; margin-bottom:20px;
+  }
+  .date-input {
+    padding:8px 12px; background:var(--surface2); border:1.5px solid var(--border);
+    border-radius:10px; color:var(--text); font-size:13px;
+    font-family:'Noto Sans KR',sans-serif; outline:none; transition:border-color .2s;
+    flex:1; min-width:130px;
+  }
+  .date-input:focus { border-color:var(--accent); }
+  .date-reset-btn {
+    padding:8px 14px; background:var(--surface2); border:1.5px solid var(--border);
+    border-radius:10px; color:var(--muted); font-size:12px; font-weight:700;
+    cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif;
+    transition:all .2s;
+  }
+  .date-reset-btn:hover { border-color:var(--red); color:var(--red); }
+
   /* WEBHOOK BAR */
   .webhook-bar { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 18px; margin-bottom:20px; display:flex; gap:10px; align-items:center; }
   .webhook-bar input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; color:var(--text); font-size:12px; font-family:'Noto Sans KR',sans-serif; outline:none; }
@@ -221,6 +242,13 @@
         <button class="filter-btn" onclick="setFilter('입금완료',this)">입금완료</button>
         <button class="filter-btn" onclick="setFilter('배송중',this)">배송중</button>
         <button class="filter-btn" onclick="setFilter('배송완료',this)">배송완료</button>
+      </div>
+      <div class="date-filter-bar">
+        <span style="font-size:13px;color:var(--muted);white-space:nowrap">📅 날짜 조회</span>
+        <input type="date" id="date-from" class="date-input" onchange="applyDateFilter()">
+        <span style="color:var(--muted);font-size:13px">~</span>
+        <input type="date" id="date-to" class="date-input" onchange="applyDateFilter()">
+        <button class="date-reset-btn" onclick="resetDateFilter()">초기화</button>
       </div>
       <div class="orders-list" id="orders-list">
         <div class="loading"><span class="spinner"></span> Sheets URL 입력 후 불러오기를 눌러주세요</div>
@@ -519,7 +547,16 @@ function getDemoOrders() {
 }
 
 function renderOrders() {
-  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
+  let filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
+  if (dateFrom || dateTo) {
+    filtered = filtered.filter(o => {
+      const d = parseOrderDate(o.orderTime);
+      if (!d) return true;
+      if (dateFrom && d < dateFrom) return false;
+      if (dateTo   && d > dateTo)   return false;
+      return true;
+    });
+  }
   const list = document.getElementById('orders-list');
   if (!filtered.length) { list.innerHTML = '<div class="empty"><span class="icon">📭</span>해당 주문이 없습니다</div>'; return; }
   list.innerHTML = filtered.map((o,i) => `
@@ -582,11 +619,44 @@ async function changeStatus(i, status) {
   showToast(`✅ ${order.name} → ${status}`);
 }
 
+let dateFrom = '';
+let dateTo = '';
+
 function setFilter(f, el) {
   currentFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderOrders();
+}
+
+function applyDateFilter() {
+  dateFrom = document.getElementById('date-from').value;
+  dateTo   = document.getElementById('date-to').value;
+  renderOrders();
+}
+
+function resetDateFilter() {
+  dateFrom = '';
+  dateTo   = '';
+  document.getElementById('date-from').value = '';
+  document.getElementById('date-to').value   = '';
+  renderOrders();
+}
+
+function parseOrderDate(orderTime) {
+  if (!orderTime) return null;
+  // Format: "2026. 4. 12. 오후 3:01" or "2026-04-12"
+  try {
+    const cleaned = orderTime.replace(/\.\s*/g, '-').replace(/오전|오후/g,'').trim();
+    const parts = cleaned.split('-');
+    if (parts.length >= 3) {
+      const y = parts[0].trim();
+      const m = parts[1].trim().padStart(2,'0');
+      const d = parts[2].trim().split(' ')[0].padStart(2,'0');
+      return `${y}-${m}-${d}`;
+    }
+  } catch(e) {}
+  return null;
 }
 
 function updateStats() {
