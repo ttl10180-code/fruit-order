@@ -419,7 +419,7 @@ async function confirmPayment(){
 }
 function closeModal(){document.getElementById('modal').classList.remove('show');Object.keys(sel).forEach(k=>{sel[k]=false;qty[k]=0;document.getElementById('card-'+k).classList.remove('selected');document.getElementById('q-'+k).textContent=0;});['name','phone','email','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');currentOrderNum='';goPage(1);}
 function toggleAdmin(){const s=document.getElementById('webhook-section');s.style.display=s.style.display==='none'?'block':'none';}
-window.addEventListener('load',()=>{if(!localStorage.getItem('gs_webhook')){localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbxfTAxsf4a7T0V5hJDxe8oT9hmBEpEkT-hlx96w0hVLlNqiwqKzdh0jK6qWgnXRVapC1w/exec');}const s=localStorage.getItem('gs_webhook');if(s)document.getElementById('webhook-url').value=s;});
+window.addEventListener('load',()=>{if(!localStorage.getItem('gs_webhook')){localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbwNAP_ortotnjJuhTj72aT5Es_4BCYh-pYCyWIr5l-r6m1XfonHh0pP2MvpRE4IsKEkEw/exec');}const s=localStorage.getItem('gs_webhook');if(s)document.getElementById('webhook-url').value=s;});
 </script>
 </body>
 </html>
