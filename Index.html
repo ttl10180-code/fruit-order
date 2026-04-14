@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="https://raw.githubusercontent.com/ttl10180-code/fruit-order/main/IMG_4541.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>🍈 월림마을 신선한 과일 직배송</title>
 <meta property="og:title" content="월림마을 신선한 과일 직배송">
@@ -419,7 +420,7 @@ async function confirmPayment(){
 }
 function closeModal(){document.getElementById('modal').classList.remove('show');Object.keys(sel).forEach(k=>{sel[k]=false;qty[k]=0;document.getElementById('card-'+k).classList.remove('selected');document.getElementById('q-'+k).textContent=0;});['name','phone','email','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');currentOrderNum='';goPage(1);}
 function toggleAdmin(){const s=document.getElementById('webhook-section');s.style.display=s.style.display==='none'?'block':'none';}
-window.addEventListener('load',()=>{if(!localStorage.getItem('gs_webhook')){localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec');}const s=localStorage.getItem('gs_webhook');if(s)document.getElementById('webhook-url').value=s;});
+window.addEventListener('load',()=>{if(!localStorage.getItem('gs_webhook')){localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbx_SXNiSXBk3xbXxmYiSpvyWj4rE-qr_HY9venXF4O1wEJFo55hEDPjv7xDv6GedeoQXg/exec');}const s=localStorage.getItem('gs_webhook');if(s)document.getElementById('webhook-url').value=s;});
 </script>
 </body>
 </html>
