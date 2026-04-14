@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -129,40 +130,41 @@
   .modal-order-box .row strong { color:var(--dark); }
   .modal-order-box .num { color:var(--accent); font-weight:700; font-size:14px; letter-spacing:1px; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid var(--border); }
 
-  /* EAT PAGE */
-  .eat-card {
-    background:#fff; border:1.5px solid var(--border); border-radius:18px;
-    padding:24px 22px; margin-bottom:16px;
-    box-shadow:0 2px 12px rgba(0,0,0,.05);
-  }
-  .eat-icon { font-size:32px; margin-bottom:6px; }
-  .eat-title {
-    font-family:'Noto Serif KR',serif; font-size:17px; font-weight:700;
-    color:var(--dark); margin-bottom:16px; padding-bottom:10px;
-    border-bottom:1.5px solid var(--border);
-  }
-  .eat-rows { display:flex; flex-direction:column; gap:14px; }
-  .eat-row { display:flex; gap:12px; align-items:flex-start; font-size:14px; color:#444; line-height:1.7; }
-  .eat-row b { color:var(--dark); }
-  .eat-bullet { font-size:16px; color:var(--melon-color); flex-shrink:0; margin-top:2px; }
-  .eat-bullet.tip { color:var(--chamoe-color); }
+/* EAT PAGE */
+.eat-card {
+background:#fff; border:1.5px solid var(–border); border-radius:18px;
+padding:24px 22px; margin-bottom:16px;
+box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+.eat-icon { font-size:32px; margin-bottom:6px; }
+.eat-title {
+font-family:‘Noto Serif KR’,serif; font-size:17px; font-weight:700;
+color:var(–dark); margin-bottom:16px; padding-bottom:10px;
+border-bottom:1.5px solid var(–border);
+}
+.eat-rows { display:flex; flex-direction:column; gap:14px; }
+.eat-row { display:flex; gap:12px; align-items:flex-start; font-size:14px; color:#444; line-height:1.7; }
+.eat-row b { color:var(–dark); }
+.eat-bullet { font-size:16px; color:var(–melon-color); flex-shrink:0; margin-top:2px; }
+.eat-bullet.tip { color:var(–chamoe-color); }
 
-  .eat-steps { display:flex; flex-direction:column; gap:10px; }
-  .eat-step { display:flex; align-items:center; gap:14px; padding:12px 14px; background:#F8F9FA; border-radius:12px; font-size:14px; color:#333; font-weight:500; }
-  .step-num { width:28px; height:28px; border-radius:50%; background:var(--melon-color); color:#fff; font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.eat-steps { display:flex; flex-direction:column; gap:10px; }
+.eat-step { display:flex; align-items:center; gap:14px; padding:12px 14px; background:#F8F9FA; border-radius:12px; font-size:14px; color:#333; font-weight:500; }
+.step-num { width:28px; height:28px; border-radius:50%; background:var(–melon-color); color:#fff; font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
-  .eat-tags { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .eat-tag { border-radius:14px; padding:14px 12px; font-size:13px; font-weight:700; color:#333; line-height:1.5; }
-  .eat-tag small { font-weight:400; color:#666; font-size:12px; }
-  .tag-green  { background:#E8F5E9; }
-  .tag-yellow { background:#FFF9E6; }
-  .tag-orange { background:#FFF3E0; }
-  .tag-blue   { background:#E3F2FD; }
-  .tag-pink   { background:#FCE4EC; }
-  .tag-purple { background:#F3E5F5; }
+.eat-tags { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.eat-tag { border-radius:14px; padding:14px 12px; font-size:13px; font-weight:700; color:#333; line-height:1.5; }
+.eat-tag small { font-weight:400; color:#666; font-size:12px; }
+.tag-green  { background:#E8F5E9; }
+.tag-yellow { background:#FFF9E6; }
+.tag-orange { background:#FFF3E0; }
+.tag-blue   { background:#E3F2FD; }
+.tag-pink   { background:#FCE4EC; }
+.tag-purple { background:#F3E5F5; }
 
-  @media(max-width:480px){ .product-grid{gap:11px} .prod-emoji{font-size:42px} .row2{grid-template-columns:1fr} .modal{padding:32px 18px} .step-tab{font-size:11px;padding:12px 4px} }
+@media(max-width:480px){ .product-grid{gap:11px} .prod-emoji{font-size:42px} .row2{grid-template-columns:1fr} .modal{padding:32px 18px} .step-tab{font-size:11px;padding:12px 4px} }
 </style>
+
 </head>
 <body>
 <header>
@@ -262,88 +264,91 @@
   </div>
 
   <!-- PAGE 5: 맛있게 먹는 방법 -->
+
   <div class="page" id="page-5">
     <div class="sec-label">🍈 파파야메론 맛있게 먹는 방법</div>
 
-    <!-- 핵심 요약 -->
-    <div style="background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border:1.5px solid #A5D6A7;border-radius:16px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;">
-      <span style="font-size:28px">👉</span>
-      <div>
-        <div style="font-size:12px;color:#388E3C;font-weight:700;letter-spacing:1px;margin-bottom:4px">핵심 요약</div>
-        <div style="font-size:14px;color:#1B5E20;font-weight:600;line-height:1.8">
-          덜 익으면 <b>실온 숙성</b> → 익으면 <b>냉장</b> → <b>빠르게 섭취</b>
-        </div>
-      </div>
+```
+<!-- 핵심 요약 -->
+<div style="background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border:1.5px solid #A5D6A7;border-radius:16px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;">
+  <span style="font-size:28px">👉</span>
+  <div>
+    <div style="font-size:12px;color:#388E3C;font-weight:700;letter-spacing:1px;margin-bottom:4px">핵심 요약</div>
+    <div style="font-size:14px;color:#1B5E20;font-weight:600;line-height:1.8">
+      덜 익으면 <b>실온 숙성</b> → 익으면 <b>냉장</b> → <b>빠르게 섭취</b>
     </div>
-
-    <!-- 보관 & 숙성 -->
-    <div class="eat-card">
-      <div class="eat-icon">🌡️</div>
-      <div class="eat-title">보관 &amp; 숙성</div>
-      <div class="eat-rows">
-        <div class="eat-row">
-          <span class="eat-bullet">✓</span>
-          <div>구입 후 <b>바로 냉장 ❌</b><br>덜 익었을 경우 <b>실온에서 2~3일 숙성</b>하세요</div>
-        </div>
-        <div class="eat-row">
-          <span class="eat-bullet">✓</span>
-          <div><b>숙성 확인법</b><br>꼭지 반대편을 눌렀을 때 살짝 말랑하면 적당해요</div>
-        </div>
-        <div class="eat-row">
-          <span class="eat-bullet">✓</span>
-          <div><b>달콤한 향이 나면</b> 숙성 완료!</div>
-        </div>
-        <div class="eat-row">
-          <span class="eat-bullet">✓</span>
-          <div>숙성 후 <b>냉장 보관</b>하고 <b>2~3일 내</b> 섭취 권장</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 손질 방법 -->
-    <div class="eat-card">
-      <div class="eat-icon">🔪</div>
-      <div class="eat-title">손질 방법</div>
-      <div class="eat-steps">
-        <div class="eat-step"><span class="step-num">1</span><span>흐르는 물에 겉면 세척</span></div>
-        <div class="eat-step"><span class="step-num">2</span><span>꼭지 방향 기준 세로로 반 자르기</span></div>
-        <div class="eat-step"><span class="step-num">3</span><span>숟가락으로 씨 제거</span></div>
-        <div class="eat-step"><span class="step-num">4</span><span>먹기 좋게 슬라이스 or 큐브 컷</span></div>
-      </div>
-      <div style="background:#FFF8E1;border:1px solid #FFD54F;border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13px;color:#5D4037;line-height:1.7;">
-        ⚠️ <b>씨 관련 안내</b><br>씨는 섭취 가능하지만 찬 성질로 인해 <b>장이 약한 경우 복통을 유발</b>할 수 있어요.
-      </div>
-    </div>
-
-    <!-- 맛있게 먹는 방법 -->
-    <div class="eat-card">
-      <div class="eat-icon">🥄</div>
-      <div class="eat-title">맛있게 먹는 방법</div>
-      <div class="eat-tags">
-        <div class="eat-tag tag-green">🍽️ 그냥 먹기<br><small>냉장 후 차갑게 먹으면 가장 깔끔</small></div>
-        <div class="eat-tag tag-yellow">🥤 스무디<br><small>우유 or 요거트와 블렌딩</small></div>
-        <div class="eat-tag tag-orange">🧃 생과일주스<br><small>물 없이 갈면 당도 높음</small></div>
-        <div class="eat-tag tag-blue">🥗 과일 샐러드<br><small>꿀, 레몬즙 소량 추가</small></div>
-        <div class="eat-tag tag-pink">🍨 아이스크림 토핑<br><small>바닐라와 궁합 최고</small></div>
-        <div class="eat-tag tag-purple">🫙 냉동 보관<br><small>큐브로 얼려 간식/스무디 활용</small></div>
-      </div>
-    </div>
-
-    <!-- 꿀팁 -->
-    <div class="eat-card">
-      <div class="eat-icon">💡</div>
-      <div class="eat-title">꿀팁</div>
-      <div class="eat-rows">
-        <div class="eat-row">
-          <span class="eat-bullet tip">💛</span>
-          <div><b>향기로 숙성 체크</b><br>꼭지 부분에서 달콤한 향이 나면 바로 먹을 타이밍이에요!</div>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-primary" onclick="goPage(1)" style="margin-top:8px">🛒 지금 주문하기</button>
   </div>
+</div>
 
+<!-- 보관 & 숙성 -->
+<div class="eat-card">
+  <div class="eat-icon">🌡️</div>
+  <div class="eat-title">보관 &amp; 숙성</div>
+  <div class="eat-rows">
+    <div class="eat-row">
+      <span class="eat-bullet">✓</span>
+      <div>구입 후 <b>바로 냉장 ❌</b><br>덜 익었을 경우 <b>실온에서 2~3일 숙성</b>하세요</div>
+    </div>
+    <div class="eat-row">
+      <span class="eat-bullet">✓</span>
+      <div><b>숙성 확인법</b><br>꼭지 반대편을 눌렀을 때 살짝 말랑하면 적당해요</div>
+    </div>
+    <div class="eat-row">
+      <span class="eat-bullet">✓</span>
+      <div><b>달콤한 향이 나면</b> 숙성 완료!</div>
+    </div>
+    <div class="eat-row">
+      <span class="eat-bullet">✓</span>
+      <div>숙성 후 <b>냉장 보관</b>하고 <b>2~3일 내</b> 섭취 권장</div>
+    </div>
+  </div>
+</div>
+
+<!-- 손질 방법 -->
+<div class="eat-card">
+  <div class="eat-icon">🔪</div>
+  <div class="eat-title">손질 방법</div>
+  <div class="eat-steps">
+    <div class="eat-step"><span class="step-num">1</span><span>흐르는 물에 겉면 세척</span></div>
+    <div class="eat-step"><span class="step-num">2</span><span>꼭지 방향 기준 세로로 반 자르기</span></div>
+    <div class="eat-step"><span class="step-num">3</span><span>숟가락으로 씨 제거</span></div>
+    <div class="eat-step"><span class="step-num">4</span><span>먹기 좋게 슬라이스 or 큐브 컷</span></div>
+  </div>
+  <div style="background:#FFF8E1;border:1px solid #FFD54F;border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13px;color:#5D4037;line-height:1.7;">
+    ⚠️ <b>씨 관련 안내</b><br>씨는 섭취 가능하지만 찬 성질로 인해 <b>장이 약한 경우 복통을 유발</b>할 수 있어요.
+  </div>
+</div>
+
+<!-- 맛있게 먹는 방법 -->
+<div class="eat-card">
+  <div class="eat-icon">🥄</div>
+  <div class="eat-title">맛있게 먹는 방법</div>
+  <div class="eat-tags">
+    <div class="eat-tag tag-green">🍽️ 그냥 먹기<br><small>냉장 후 차갑게 먹으면 가장 깔끔</small></div>
+    <div class="eat-tag tag-yellow">🥤 스무디<br><small>우유 or 요거트와 블렌딩</small></div>
+    <div class="eat-tag tag-orange">🧃 생과일주스<br><small>물 없이 갈면 당도 높음</small></div>
+    <div class="eat-tag tag-blue">🥗 과일 샐러드<br><small>꿀, 레몬즙 소량 추가</small></div>
+    <div class="eat-tag tag-pink">🍨 아이스크림 토핑<br><small>바닐라와 궁합 최고</small></div>
+    <div class="eat-tag tag-purple">🫙 냉동 보관<br><small>큐브로 얼려 간식/스무디 활용</small></div>
+  </div>
+</div>
+
+<!-- 꿀팁 -->
+<div class="eat-card">
+  <div class="eat-icon">💡</div>
+  <div class="eat-title">꿀팁</div>
+  <div class="eat-rows">
+    <div class="eat-row">
+      <span class="eat-bullet tip">💛</span>
+      <div><b>향기로 숙성 체크</b><br>꼭지 부분에서 달콤한 향이 나면 바로 먹을 타이밍이에요!</div>
+    </div>
+  </div>
+</div>
+
+<button class="btn-primary" onclick="goPage(1)" style="margin-top:8px">🛒 지금 주문하기</button>
+```
+
+  </div>
 
 </main>
 
@@ -422,5 +427,6 @@ function closeModal(){document.getElementById('modal').classList.remove('show');
 function toggleAdmin(){const s=document.getElementById('webhook-section');s.style.display=s.style.display==='none'?'block':'none';}
 window.addEventListener('load',()=>{if(!localStorage.getItem('gs_webhook')){localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec');}const s=localStorage.getItem('gs_webhook');if(s)document.getElementById('webhook-url').value=s;});
 </script>
+
 </body>
 </html>
