@@ -259,7 +259,19 @@
     <a href="https://qr.kakaopay.com/FJEV4WtMy" target="_blank" class="kakaopay-btn"><span class="kp-icon">💛</span>카카오페이로 바로 송금하기<span class="kp-arrow">→</span></a>
     <div class="transfer-notice">⚠️ <strong>입금 시 주문자 이름으로 입금해 주세요.</strong><br>입금 확인 후 수확 스케줄에 따라 순차 배송됩니다.<br>다른 이름으로 입금 시 확인이 지연될 수 있습니다.</div>
     <button class="btn-primary" id="confirm-btn" onclick="confirmPayment()">입금 완료했습니다 ✓</button>
-    <button class="btn-secondary" onclick="goPage(3)">← 주문 내용 다시 확인</button>
+    <div style="background:#F8F9FA;border:1.5px solid var(--border);border-radius:16px;padding:20px 18px;margin-bottom:16px;">
+  <div style="font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1.5px solid var(--border);">🧾 주문 내역</div>
+  <div id="pay-items-summary" style="font-size:14px;color:#444;line-height:2;"></div>
+  <div style="border-top:1.5px solid var(--border);margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:14px;color:#666;">합계</span>
+    <span style="font-size:18px;font-weight:900;color:var(--chamoe-color);font-family:'Noto Serif KR',serif;" id="pay-items-total">0원</span>
+  </div>
+  <div style="margin-top:10px;font-size:13px;color:#666;line-height:1.8;">
+    <div>👤 <span id="pay-name-display"></span></div>
+    <div>📱 <span id="pay-phone-display"></span></div>
+    <div>🏠 <span id="pay-addr-display"></span></div>
+  </div>
+</div>
     <p class="note">문의: 카카오톡 또는 전화로 연락 주세요</p>
   </div>
 
@@ -377,8 +389,18 @@ function fmtPrice(n){return n.toLocaleString('ko-KR')+'원';}
 function searchAddress(){new daum.Postcode({oncomplete:function(data){const addr=data.userSelectedType==='R'?data.roadAddress:data.jibunAddress;document.getElementById('postcode').value=data.zonecode;document.getElementById('address1').value=addr;document.getElementById('address2').focus();}}).open();}
 function goPage(n){
   if(n===2&&!Object.values(sel).some(Boolean)){alert('상품을 하나 이상 선택해 주세요.');return;}
-  if(n===3){if(!document.getElementById('name').value.trim()){alert('이름을 입력해 주세요.');return;}if(!document.getElementById('phone').value.trim()){alert('연락처를 입력해 주세요.');return;}if(!document.getElementById('address1').value.trim()){alert('주소 검색을 먼저 해주세요.');return;}buildSummary();}
-  if(n===4){document.getElementById('pay-amount').textContent=fmtPrice(calcTotal());window._paymentPending=true;window.onbeforeunload=function(e){if(window._paymentPending){e.preventDefault();e.returnValue='⚠️ 아직 입금 완료 처리가 되지 않았어요! 입금 완료 버튼을 눌러주세요.';return '⚠️ 아직 입금 완료 처리가 되지 않았어요! 입금 완료 버튼을 눌러주세요.';}};}
+  if(n===3){const fromPage=document.querySelector('.page.active')?.id;if(fromPage!=='page-4'){if(!document.getElementById('name').value.trim()){alert('이름을 입력해 주세요.');return;}if(!document.getElementById('phone').value.trim()){alert('연락처를 입력해 주세요.');return;}if(!document.getElementById('address1').value.trim()){alert('주소 검색을 먼저 해주세요.');return;}}buildSummary();}
+  if(n===4){
+  document.getElementById('pay-amount').textContent=fmtPrice(calcTotal());
+  // 주문 내역 미리보기
+  const items=Object.keys(sel).filter(k=>sel[k]);
+  document.getElementById('pay-items-summary').innerHTML=items.map(k=>`<div style="display:flex;justify-content:space-between;"><span>${PRODUCTS[k].emoji} ${PRODUCTS[k].name} × ${qty[k]}박스</span><span style="font-weight:700">${fmtPrice(PRODUCTS[k].price*qty[k])}</span></div>`).join('');
+  document.getElementById('pay-items-total').textContent=fmtPrice(calcTotal());
+  document.getElementById('pay-name-display').textContent=document.getElementById('name').value;
+  document.getElementById('pay-phone-display').textContent=document.getElementById('phone').value;
+  const a1=document.getElementById('address1').value,a2=document.getElementById('address2').value;
+  document.getElementById('pay-addr-display').textContent=a2?a1+' '+a2:a1;
+  window._paymentPending=true;window.onbeforeunload=function(e){if(window._paymentPending){e.preventDefault();e.returnValue='⚠️ 아직 입금 완료 처리가 되지 않았어요! 입금 완료 버튼을 눌러주세요.';return '⚠️ 아직 입금 완료 처리가 되지 않았어요! 입금 완료 버튼을 눌러주세요.';}};}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+n).classList.add('active');
   document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.toggle('active',i+1===n);t.classList.toggle('done',i+1<n);});
