@@ -176,7 +176,7 @@
   <div class="step-tab" id="tab-2">② 배송 정보</div>
   <div class="step-tab" id="tab-3">③ 주문 확인</div>
   <div class="step-tab" id="tab-4">④ 결제</div>
-  <div class="step-tab" id="tab-5" onclick="goPage(5)" style="cursor:pointer">⑤ 맛있게 먹기</div>
+  <div class="step-tab" id="tab-5" onclick="goPage5Check()" style="cursor:pointer">⑤ 맛있게 먹기</div>
 </div>
 <main>
   <div class="page active" id="page-1">
@@ -387,6 +387,17 @@ function chQty(e,id,d){e.stopPropagation();qty[id]=Math.max(0,Math.min(20,qty[id
 function calcTotal(){return Object.keys(sel).filter(k=>sel[k]).reduce((s,k)=>s+PRODUCTS[k].price*qty[k],0);}
 function fmtPrice(n){return n.toLocaleString('ko-KR')+'원';}
 function searchAddress(){new daum.Postcode({oncomplete:function(data){const addr=data.userSelectedType==='R'?data.roadAddress:data.jibunAddress;document.getElementById('postcode').value=data.zonecode;document.getElementById('address1').value=addr;document.getElementById('address2').focus();}}).open();}
+function goPage5Check(){
+  const active=document.querySelector('.page.active')?.id;
+  if(active==='page-3'||active==='page-4'){
+    alert('⚠️ 입금 완료 버튼을 먼저 눌러주세요!');
+    return;
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-5').classList.add('active');
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.toggle('active',i+1===5);t.classList.toggle('done',false);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 function goPage(n){
   if(n===2&&!Object.values(sel).some(Boolean)){alert('상품을 하나 이상 선택해 주세요.');return;}
   if(n===3){const fromPage=document.querySelector('.page.active')?.id;if(fromPage!=='page-4'){if(!document.getElementById('name').value.trim()){alert('이름을 입력해 주세요.');return;}if(!document.getElementById('phone').value.trim()){alert('연락처를 입력해 주세요.');return;}if(!document.getElementById('address1').value.trim()){alert('주소 검색을 먼저 해주세요.');return;}}buildSummary();}
