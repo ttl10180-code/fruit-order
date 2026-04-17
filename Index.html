@@ -258,7 +258,11 @@
     <div class="or-divider">또는 카카오페이로 간편 송금</div>
     <a href="https://qr.kakaopay.com/FJEV4WtMy" target="_blank" class="kakaopay-btn"><span class="kp-icon">💛</span>카카오페이로 바로 송금하기<span class="kp-arrow">→</span></a>
     <div class="transfer-notice">⚠️ <strong>입금 시 주문자 이름으로 입금해 주세요.</strong><br>입금 확인 후 수확 스케줄에 따라 순차 배송됩니다.<br>다른 이름으로 입금 시 확인이 지연될 수 있습니다.</div>
-    <button class="btn-primary" id="confirm-btn" onclick="confirmPayment()">입금 완료했습니다 ✓</button>
+    <button class="btn-primary" id="confirm-btn" onclick="confirmPayment()">💳 입금 완료 해주세요</button>
+<div id="after-payment-btns" style="display:none;margin-top:12px;">
+  <button class="btn-primary" onclick="goPage(1)" style="background:linear-gradient(135deg,#3D8B5E,#2d6b48);margin-bottom:10px;">🛒 새 주문하기</button>
+  <button class="btn-secondary" onclick="goPage5After()">🍈 맛있게 먹기</button>
+</div>
     <div style="background:#F8F9FA;border:1.5px solid var(--border);border-radius:16px;padding:20px 18px;margin-bottom:16px;">
   <div style="font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1.5px solid var(--border);">🧾 주문 내역</div>
   <div id="pay-items-summary" style="font-size:14px;color:#444;line-height:2;"></div>
@@ -387,9 +391,15 @@ function chQty(e,id,d){e.stopPropagation();qty[id]=Math.max(0,Math.min(20,qty[id
 function calcTotal(){return Object.keys(sel).filter(k=>sel[k]).reduce((s,k)=>s+PRODUCTS[k].price*qty[k],0);}
 function fmtPrice(n){return n.toLocaleString('ko-KR')+'원';}
 function searchAddress(){new daum.Postcode({oncomplete:function(data){const addr=data.userSelectedType==='R'?data.roadAddress:data.jibunAddress;document.getElementById('postcode').value=data.zonecode;document.getElementById('address1').value=addr;document.getElementById('address2').focus();}}).open();}
+function goPage5After(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-5').classList.add('active');
+  document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.toggle('active',i+1===5);t.classList.toggle('done',false);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 function goPage5Check(){
   const active=document.querySelector('.page.active')?.id;
-  if(active==='page-3'||active==='page-4'){
+  if((active==='page-3'||active==='page-4')&&window._paymentPending!==false){
     alert('⚠️ 입금 완료 버튼을 먼저 눌러주세요!');
     return;
   }
@@ -450,7 +460,12 @@ async function confirmPayment(){
     document.getElementById('modal-num').textContent='주문번호: '+currentOrderNum;
     document.getElementById('modal-items').textContent=items.map(k=>`${PRODUCTS[k].name} ×${qty[k]}`).join(', ');
     document.getElementById('modal-amount').textContent=fmtPrice(total);
-    window._paymentPending=false;window.onbeforeunload=null;document.getElementById('modal').classList.add('show');
+    window._paymentPending=false;window.onbeforeunload=null;
+document.getElementById('confirm-btn').textContent='✅ 입금 완료 했습니다';
+document.getElementById('confirm-btn').disabled=true;
+document.getElementById('confirm-btn').style.background='#2ECC71';
+document.getElementById('after-payment-btns').style.display='block';
+document.getElementById('modal').classList.add('show');
   },800);
 }
 function closeModal(){document.getElementById('modal').classList.remove('show');Object.keys(sel).forEach(k=>{sel[k]=false;qty[k]=0;document.getElementById('card-'+k).classList.remove('selected');document.getElementById('q-'+k).textContent=0;});['name','phone','email','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');currentOrderNum='';goPage(1);}
