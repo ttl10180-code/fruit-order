@@ -213,12 +213,14 @@
   <div class="page" id="page-2">
     <div class="sec-label">📦 배송 정보를 입력해 주세요</div>
     <div class="form-block">
-      <div class="row2">
-        <div><label class="f-label">이름 <span class="req">*</span></label><input class="f-input" id="name" type="text" placeholder="홍길동"></div>
-        <div><label class="f-label">연락처 <span class="req">*</span></label><input class="f-input" id="phone" type="tel" placeholder="010-0000-0000" oninput="formatPhone(this)"></div>
+        <label class="f-label">이름 <span class="req">*</span></label>
+        <input class="f-input" id="name" type="text" placeholder="홍길동">
       </div>
-    </div>
-    <div class="form-block"><label class="f-label">이메일 <span style="color:var(--muted);font-weight:400">(선택)</span></label><input class="f-input" id="email" type="email" placeholder="example@email.com"></div>
+      <div class="form-block">
+        <label class="f-label">연락처 <span class="req">*</span></label>
+        <input class="f-input" id="phone" type="tel" placeholder="010-0000-0000" oninput="formatPhone(this)">
+      </div>
+    
     <div class="form-block">
       <label class="f-label">배송 주소 <span class="req">*</span></label>
       <div class="addr-row"><input class="f-input" id="postcode" placeholder="우편번호" readonly style="max-width:130px"><button class="addr-btn" onclick="searchAddress()">🔍 주소 검색</button></div>
@@ -258,7 +260,7 @@
     <div class="transfer-notice">⚠️ <strong>입금 시 주문자 이름으로 입금해 주세요.</strong><br>입금 확인 후 수확 스케줄에 따라 순차 배송됩니다.<br>다른 이름으로 입금 시 확인이 지연될 수 있습니다.</div>
     <button class="btn-primary" id="confirm-btn" onclick="confirmPayment()">입금 완료했습니다 ✓</button>
     <button class="btn-secondary" onclick="goPage(3)">← 주문 내용 다시 확인</button>
-    <p class="note">문의: 010-4885-2930로 문자 연락 주세요</p>
+    <p class="note">문의: 카카오톡 또는 전화로 연락 주세요</p>
   </div>
 
   <!-- PAGE 5: 맛있게 먹는 방법 -->
@@ -376,7 +378,9 @@ function searchAddress(){new daum.Postcode({oncomplete:function(data){const addr
 function goPage(n){
   if(n===2&&!Object.values(sel).some(Boolean)){alert('상품을 하나 이상 선택해 주세요.');return;}
   if(n===3){if(!document.getElementById('name').value.trim()){alert('이름을 입력해 주세요.');return;}if(!document.getElementById('phone').value.trim()){alert('연락처를 입력해 주세요.');return;}if(!document.getElementById('address1').value.trim()){alert('주소 검색을 먼저 해주세요.');return;}buildSummary();}
-  if(n===4){document.getElementById('pay-amount').textContent=fmtPrice(calcTotal());}
+  if(n===4){document.getElementById('pay-amount').textContent=fmtPrice(calcTotal());window._paymentPending=true;window.onbeforeunload=function(e){if(window._paymentPending){e.preventDefault();e.returnValue='⚠️ 아직 입금 완료 처리가 되지 않았어요!
+입금 완료 버튼을 눌러주세요.';return '⚠️ 아직 입금 완료 처리가 되지 않았어요!
+입금 완료 버튼을 눌러주세요.';}};}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+n).classList.add('active');
   document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.toggle('active',i+1===n);t.classList.toggle('done',i+1<n);});
@@ -397,7 +401,7 @@ async function submitOrder(){
   const btn=document.getElementById('order-btn');
   currentOrderNum='#'+Math.floor(100000+Math.random()*900000);
   const items=Object.keys(sel).filter(k=>sel[k]);const total=calcTotal();
-  const payload={orderNum:currentOrderNum,orderTime:new Date().toLocaleString('ko-KR'),name:document.getElementById('name').value.trim(),phone:document.getElementById('phone').value.trim(),email:document.getElementById('email').value.trim(),address:document.getElementById('address1').value.trim(),address2:document.getElementById('address2').value.trim(),memo:document.getElementById('memo').value.trim(),items:items.map(k=>`${PRODUCTS[k].name} x${qty[k]}박스`).join(', '),totalAmount:total,paymentStatus:'입금대기',melon5:sel.melon5?qty.melon5:0,melon10:sel.melon10?qty.melon10:0,chamoe5:sel.chamoe5?qty.chamoe5:0,chamoe10:sel.chamoe10?qty.chamoe10:0};
+  const payload={orderNum:currentOrderNum,orderTime:new Date().toLocaleString('ko-KR'),name:document.getElementById('name').value.trim(),phone:document.getElementById('phone').value.trim(),address:document.getElementById('address1').value.trim(),address2:document.getElementById('address2').value.trim(),memo:document.getElementById('memo').value.trim(),items:items.map(k=>`${PRODUCTS[k].name} x${qty[k]}박스`).join(', '),totalAmount:total,paymentStatus:'입금대기',melon5:sel.melon5?qty.melon5:0,melon10:sel.melon10?qty.melon10:0,chamoe5:sel.chamoe5?qty.chamoe5:0,chamoe10:sel.chamoe10?qty.chamoe10:0};
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 처리 중...';
   const wh=localStorage.getItem('gs_webhook');
   if(wh){try{await fetch(wh,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}}
@@ -409,13 +413,13 @@ async function confirmPayment(){
   const btn=document.getElementById('confirm-btn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 처리 중...';
   const wh=localStorage.getItem('gs_webhook');
-  if(wh&&currentOrderNum){try{await fetch(wh,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'updatePayment',orderNum:currentOrderNum})});}catch(e){console.warn(e);}}
+  if(wh&&currentOrderNum){try{await fetch(wh,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'updatePayment',orderNum:currentOrderNum,name:document.getElementById('name').value.trim(),phone:document.getElementById('phone').value.trim(),items:Object.keys(sel).filter(k=>sel[k]).map(k=>`${PRODUCTS[k].name} x${qty[k]}박스`).join(', '),totalAmount:calcTotal()})});}catch(e){console.warn(e);}}
   setTimeout(()=>{
     btn.disabled=false;btn.innerHTML='입금 완료했습니다 ✓';
     document.getElementById('modal-num').textContent='주문번호: '+currentOrderNum;
     document.getElementById('modal-items').textContent=items.map(k=>`${PRODUCTS[k].name} ×${qty[k]}`).join(', ');
     document.getElementById('modal-amount').textContent=fmtPrice(total);
-    document.getElementById('modal').classList.add('show');
+    window._paymentPending=false;window.onbeforeunload=null;document.getElementById('modal').classList.add('show');
   },800);
 }
 function closeModal(){document.getElementById('modal').classList.remove('show');Object.keys(sel).forEach(k=>{sel[k]=false;qty[k]=0;document.getElementById('card-'+k).classList.remove('selected');document.getElementById('q-'+k).textContent=0;});['name','phone','email','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');currentOrderNum='';goPage(1);}
