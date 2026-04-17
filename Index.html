@@ -378,9 +378,7 @@ function searchAddress(){new daum.Postcode({oncomplete:function(data){const addr
 function goPage(n){
   if(n===2&&!Object.values(sel).some(Boolean)){alert('상품을 하나 이상 선택해 주세요.');return;}
   if(n===3){if(!document.getElementById('name').value.trim()){alert('이름을 입력해 주세요.');return;}if(!document.getElementById('phone').value.trim()){alert('연락처를 입력해 주세요.');return;}if(!document.getElementById('address1').value.trim()){alert('주소 검색을 먼저 해주세요.');return;}buildSummary();}
-  if(n===4){document.getElementById('pay-amount').textContent=fmtPrice(calcTotal());window._paymentPending=true;window.onbeforeunload=function(e){if(window._paymentPending){e.preventDefault();e.returnValue='⚠️ 아직 입금 완료 처리가 되지 않았어요!
-입금 완료 버튼을 눌러주세요.';return '⚠️ 아직 입금 완료 처리가 되지 않았어요!
-입금 완료 버튼을 눌러주세요.';}};}
+  if(n===4){document.getElementById('pay-amount').textContent=fmtPrice(calcTotal());window._paymentPending=true;window.onbeforeunload=function(e){if(window._paymentPending){e.preventDefault();e.returnValue='⚠️ 아직 입금 완료 처리가 되지 않았어요! 입금 완료 버튼을 눌러주세요.';return '⚠️ 아직 입금 완료 처리가 되지 않았어요! 입금 완료 버튼을 눌러주세요.';}};}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+n).classList.add('active');
   document.querySelectorAll('.step-tab').forEach((t,i)=>{t.classList.toggle('active',i+1===n);t.classList.toggle('done',i+1<n);});
