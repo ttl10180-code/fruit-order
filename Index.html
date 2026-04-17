@@ -260,7 +260,7 @@
     <div class="transfer-notice">⚠️ <strong>입금 시 주문자 이름으로 입금해 주세요.</strong><br>입금 확인 후 수확 스케줄에 따라 순차 배송됩니다.<br>다른 이름으로 입금 시 확인이 지연될 수 있습니다.</div>
     <button class="btn-primary" id="confirm-btn" onclick="confirmPayment()">💳 입금 완료 해주세요</button>
 <div id="after-payment-btns" style="display:none;margin-top:12px;">
-  <button class="btn-primary" onclick="goPage(1)" style="background:linear-gradient(135deg,#3D8B5E,#2d6b48);margin-bottom:10px;">🛒 새 주문하기</button>
+  <button class="btn-primary" onclick="resetOrder()" style="background:linear-gradient(135deg,#3D8B5E,#2d6b48);margin-bottom:10px;">🛒 새 주문하기</button>
   <button class="btn-secondary" onclick="goPage5After()">🍈 맛있게 먹기</button>
 </div>
     <div style="background:#F8F9FA;border:1.5px solid var(--border);border-radius:16px;padding:20px 18px;margin-bottom:16px;">
@@ -391,6 +391,22 @@ function chQty(e,id,d){e.stopPropagation();qty[id]=Math.max(0,Math.min(20,qty[id
 function calcTotal(){return Object.keys(sel).filter(k=>sel[k]).reduce((s,k)=>s+PRODUCTS[k].price*qty[k],0);}
 function fmtPrice(n){return n.toLocaleString('ko-KR')+'원';}
 function searchAddress(){new daum.Postcode({oncomplete:function(data){const addr=data.userSelectedType==='R'?data.roadAddress:data.jibunAddress;document.getElementById('postcode').value=data.zonecode;document.getElementById('address1').value=addr;document.getElementById('address2').focus();}}).open();}
+function resetOrder(){
+  // 상품 초기화
+  Object.keys(sel).forEach(k=>{sel[k]=false;qty[k]=0;document.getElementById('card-'+k).classList.remove('selected');document.getElementById('q-'+k).textContent=0;});
+  // 폼 초기화
+  ['name','phone','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');
+  // 버튼 초기화
+  document.getElementById('confirm-btn').textContent='💳 입금 완료 해주세요';
+  document.getElementById('confirm-btn').disabled=false;
+  document.getElementById('confirm-btn').style.background='';
+  document.getElementById('after-payment-btns').style.display='none';
+  // 상태 초기화
+  currentOrderNum='';
+  window._paymentPending=false;
+  window.onbeforeunload=null;
+  goPage(1);
+}
 function goPage5After(){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-5').classList.add('active');
