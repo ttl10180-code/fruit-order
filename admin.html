@@ -232,9 +232,11 @@
     <div class="tab-content active" id="tab-orders">
       <div class="webhook-bar">
         <span style="font-size:13px;color:var(--muted);white-space:nowrap">📡 Sheets URL</span>
-        <input type="text" id="admin-webhook" placeholder="https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec">
+        <input type="text" id="admin-webhook" placeholder="https://script.google.com/macros/s/AKfycbx_SXNiSXBk3xbXxmYiSpvyWj4rE-qr_HY9venXF4O1wEJFo55hEDPjv7xDv6GedeoQXg/exec">
         <button class="wh-btn wh-save" onclick="saveAdminWebhook()">저장</button>
-        <button class="wh-btn wh-load" onclick="loadOrders()">불러오기</button>
+      </div>
+      <div style="margin-bottom:14px;">
+        <button class="wh-btn wh-load" onclick="loadOrders()" style="width:100%;padding:12px;border-radius:12px;font-size:14px;">🔄 주문 불러오기</button>
       </div>
       <div class="filter-row">
         <button class="filter-btn active" onclick="setFilter('전체',this)">전체</button>
@@ -245,10 +247,24 @@
       </div>
       <div class="date-filter-bar">
         <span style="font-size:13px;color:var(--muted);white-space:nowrap">📅 날짜 조회</span>
-        <input type="date" id="date-from" class="date-input" onchange="applyDateFilter()">
+        <input type="date" id="date-from" class="date-input" onchange="applyFilters()">
         <span style="color:var(--muted);font-size:13px">~</span>
-        <input type="date" id="date-to" class="date-input" onchange="applyDateFilter()">
+        <input type="date" id="date-to" class="date-input" onchange="applyFilters()">
         <button class="date-reset-btn" onclick="resetDateFilter()">초기화</button>
+      </div>
+      <div class="date-filter-bar" style="margin-top:-10px;">
+        <select id="search-type" style="padding:8px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none;">
+          <option value="all">전체 검색</option>
+          <option value="name">이름</option>
+          <option value="phone">연락처</option>
+          <option value="orderNum">주문번호</option>
+        </select>
+        <input type="text" id="search-keyword" placeholder="검색어 입력..." class="date-input" oninput="applyFilters()" style="flex:2;">
+        <button class="date-reset-btn" onclick="resetSearch()">초기화</button>
+      </div>
+      <div id="total-summary" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;font-size:14px;">
+        <span style="color:var(--muted);">조회된 주문</span>
+        <span><b id="total-count">0</b>건 &nbsp;|&nbsp; 합계 <b id="total-amount" style="color:var(--accent);">0원</b></span>
       </div>
       <div class="orders-list" id="orders-list">
         <div class="loading"><span class="spinner"></span> Sheets URL 입력 후 불러오기를 눌러주세요</div>
@@ -557,6 +573,25 @@ function renderOrders() {
       return true;
     });
   }
+  // 검색 필터
+  const keyword = (document.getElementById('search-keyword')?.value || '').trim();
+  const searchType = document.getElementById('search-type')?.value || 'all';
+  if (keyword) {
+    const kw = keyword.toLowerCase();
+    filtered = filtered.filter(o => {
+      if (searchType === 'name')     return (o.name    ||'').toLowerCase().includes(kw);
+      if (searchType === 'phone')    return (o.phone   ||'').toLowerCase().includes(kw);
+      if (searchType === 'orderNum') return (o.orderNum||'').toLowerCase().includes(kw);
+      return (o.name||'').toLowerCase().includes(kw) ||
+             (o.phone||'').toLowerCase().includes(kw) ||
+             (o.orderNum||'').toLowerCase().includes(kw);
+    });
+  }
+  // 토탈 표시
+  const tc = document.getElementById('total-count');
+  const ta = document.getElementById('total-amount');
+  if (tc) tc.textContent = filtered.length;
+  if (ta) ta.textContent = filtered.reduce((s,o)=>s+(Number(o.totalAmount)||0),0).toLocaleString('ko-KR')+'원';
   const list = document.getElementById('orders-list');
   if (!filtered.length) { list.innerHTML = '<div class="empty"><span class="icon">📭</span>해당 주문이 없습니다</div>'; return; }
   list.innerHTML = filtered.map((o,i) => `
@@ -629,17 +664,24 @@ function setFilter(f, el) {
   renderOrders();
 }
 
-function applyDateFilter() {
+function applyFilters() {
   dateFrom = document.getElementById('date-from').value;
   dateTo   = document.getElementById('date-to').value;
   renderOrders();
 }
+
+function applyDateFilter() { applyFilters(); }
 
 function resetDateFilter() {
   dateFrom = '';
   dateTo   = '';
   document.getElementById('date-from').value = '';
   document.getElementById('date-to').value   = '';
+  renderOrders();
+}
+
+function resetSearch() {
+  document.getElementById('search-keyword').value = '';
   renderOrders();
 }
 
