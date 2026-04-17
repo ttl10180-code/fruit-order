@@ -397,9 +397,12 @@ function resetOrder(){
   // 폼 초기화
   ['name','phone','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');
   // 버튼 초기화
-  document.getElementById('confirm-btn').textContent='💳 입금 완료 해주세요';
-  document.getElementById('confirm-btn').disabled=false;
-  document.getElementById('confirm-btn').style.background='';
+  const cb=document.getElementById('confirm-btn');
+  cb.textContent='💳 입금 완료 해주세요';
+  cb.disabled=false;
+  cb.style.background='linear-gradient(135deg,#FF6B35,#e8502a)';
+  cb.style.opacity='1';
+  cb.onclick=function(){confirmPayment();};
   document.getElementById('after-payment-btns').style.display='none';
   // 상태 초기화
   currentOrderNum='';
