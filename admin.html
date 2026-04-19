@@ -243,6 +243,7 @@
         <button class="filter-btn" onclick="setFilter('입금대기',this)">입금대기</button>
         <button class="filter-btn" onclick="setFilter('입금완료',this)">입금완료</button>
         <button class="filter-btn" onclick="setFilter('배송중',this)">배송중</button>
+        <button class="filter-btn" onclick="setFilter('선물',this)" style="color:#e91e8c;">🎁 선물</button>
         <button class="filter-btn" onclick="setFilter('배송완료',this)">배송완료</button>
       </div>
       <div class="date-filter-bar">
@@ -627,7 +628,7 @@ function renderOrders() {
         </div>
         <div class="action-title" style="margin-bottom:8px;">📋 상태 변경</div>
         <div class="status-btns" style="margin-bottom:16px;">
-          ${['입금대기','입금완료','배송중','배송완료'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')">${s}</button>`).join('')}
+          ${['입금대기','입금완료','배송중','배송완료','선물'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')">${s}</button>`).join('')}
         </div>
         <div class="action-title" style="margin-bottom:8px;">💬 문자 발송</div>
         <div class="msg-btns">
