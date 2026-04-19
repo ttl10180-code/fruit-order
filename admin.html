@@ -267,6 +267,29 @@
         <span style="color:var(--muted);">조회된 주문</span>
         <span><b id="total-count">0</b>건 &nbsp;|&nbsp; 합계 <b id="total-amount" style="color:var(--accent);">0원</b></span>
       </div>
+      <!-- 상품별 현황 -->
+      <div id="product-summary" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="prod-stat-card" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">🍈 파파야메론 5kg</div>
+          <div style="font-size:20px;font-weight:900;color:var(--green);" id="stat-melon5">0</div>
+          <div style="font-size:11px;color:var(--muted);">박스</div>
+        </div>
+        <div class="prod-stat-card" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">🍈 파파야메론 10kg</div>
+          <div style="font-size:20px;font-weight:900;color:var(--green);" id="stat-melon10">0</div>
+          <div style="font-size:11px;color:var(--muted);">박스</div>
+        </div>
+        <div class="prod-stat-card" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">🟡 참외 5kg</div>
+          <div style="font-size:20px;font-weight:900;color:var(--accent);" id="stat-chamoe5">0</div>
+          <div style="font-size:11px;color:var(--muted);">박스</div>
+        </div>
+        <div class="prod-stat-card" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">🟡 참외 10kg</div>
+          <div style="font-size:20px;font-weight:900;color:var(--accent);" id="stat-chamoe10">0</div>
+          <div style="font-size:11px;color:var(--muted);">박스</div>
+        </div>
+      </div>
       <div class="orders-list" id="orders-list">
         <div class="loading"><span class="spinner"></span> Sheets URL 입력 후 불러오기를 눌러주세요</div>
       </div>
@@ -593,6 +616,19 @@ function renderOrders() {
   const ta = document.getElementById('total-amount');
   if (tc) tc.textContent = filtered.length;
   if (ta) ta.textContent = filtered.reduce((s,o)=>s+(Number(o.totalAmount)||0),0).toLocaleString('ko-KR')+'원';
+  // 상품별 집계
+  const sm5  = filtered.reduce((s,o)=>s+(Number(o.melon5) ||0),0);
+  const sm10 = filtered.reduce((s,o)=>s+(Number(o.melon10)||0),0);
+  const sc5  = filtered.reduce((s,o)=>s+(Number(o.chamoe5)||0),0);
+  const sc10 = filtered.reduce((s,o)=>s+(Number(o.chamoe10)||0),0);
+  const es5  = document.getElementById('stat-melon5');
+  const es10 = document.getElementById('stat-melon10');
+  const ec5  = document.getElementById('stat-chamoe5');
+  const ec10 = document.getElementById('stat-chamoe10');
+  if (es5)  es5.textContent  = sm5;
+  if (es10) es10.textContent = sm10;
+  if (ec5)  ec5.textContent  = sc5;
+  if (ec10) ec10.textContent = sc10;
   const list = document.getElementById('orders-list');
   if (!filtered.length) { list.innerHTML = '<div class="empty"><span class="icon">📭</span>해당 주문이 없습니다</div>'; return; }
   list.innerHTML = filtered.map((o,i) => `
