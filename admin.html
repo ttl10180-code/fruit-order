@@ -664,10 +664,10 @@ function renderOrders() {
         </div>
         <div class="action-title" style="margin-bottom:8px;">📋 상태 변경</div>
         <div class="status-btns" style="margin-bottom:16px;">
-          ${['입금대기','입금완료'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')" style="flex:1">${s}</button>`).join('')}
+          ${['입금대기','입금완료'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus('${o.orderNum}','${s}')" style="flex:1">${s}</button>`).join('')}
         </div>
         <div class="st-btns" style="margin-top:6px;">
-          ${['배송중','배송완료','선물'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')" style="flex:1;${s==='선물'?'color:#e91e8c;border-color:#e91e8c;':''}">${s==='선물'?'🎁 선물':s}</button>`).join('')}
+          ${['배송중','배송완료','선물'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus('${o.orderNum}','${s}')" style="flex:1;${s==='선물'?'color:#e91e8c;border-color:#e91e8c;':''}">${s==='선물'?'🎁 선물':s}</button>`).join('')}
         </div>
         <div class="action-title" style="margin-bottom:8px;">💬 문자 발송</div>
         <div class="msg-btns">
@@ -680,10 +680,10 @@ function renderOrders() {
 }
 function toggleCard(i) { document.getElementById('body-'+i).classList.toggle('open'); }
 
-async function changeStatus(i, status) {
-  const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
-  const order = filtered[i];
-  const realIdx = allOrders.findIndex(o=>o.orderNum===order.orderNum);
+async function changeStatus(orderNum, status) {
+  const realIdx = allOrders.findIndex(o=>o.orderNum===orderNum);
+  if (realIdx === -1) return;
+  const order = allOrders[realIdx];
   allOrders[realIdx].paymentStatus = status;
   // 선물이면 금액 0원으로
   if (status === '선물') allOrders[realIdx].totalAmount = 0;
