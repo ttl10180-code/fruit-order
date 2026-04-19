@@ -161,6 +161,16 @@
   .tag-pink   { background:#FCE4EC; }
   .tag-purple { background:#F3E5F5; }
 
+
+  /* POPUP */
+  .popup-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); z-index:999; display:flex; align-items:center; justify-content:center; padding:20px; animation:fadeIn .25s ease; }
+  .popup-box { background:#fff; border-radius:24px; padding:36px 28px; max-width:320px; width:100%; text-align:center; animation:popIn .3s ease; box-shadow:0 20px 60px rgba(0,0,0,.2); }
+  .popup-icon { font-size:52px; margin-bottom:12px; }
+  .popup-title { font-family:'Noto Serif KR',serif; font-size:22px; font-weight:900; color:var(--dark); margin-bottom:10px; }
+  .popup-msg { font-size:15px; color:#555; line-height:1.8; margin-bottom:24px; }
+  .popup-btn { width:100%; padding:14px; background:linear-gradient(135deg,#FF6B35,#e8502a); color:#fff; border:none; border-radius:12px; font-family:'Noto Serif KR',serif; font-size:16px; font-weight:700; cursor:pointer; transition:all .2s; }
+  .popup-btn:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(255,107,53,.4); }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
   @media(max-width:480px){ .product-grid{gap:11px} .prod-emoji{font-size:42px} .row2{grid-template-columns:1fr} .modal{padding:32px 18px} .step-tab{font-size:11px;padding:12px 4px} }
 </style>
 </head>
@@ -276,7 +286,7 @@
     <div>🏠 <span id="pay-addr-display"></span></div>
   </div>
 </div>
-    <p class="note">문의: 010-4885-2930 SMS 연락 주세요</p>
+    <p class="note">문의: 카카오톡 또는 전화로 연락 주세요</p>
   </div>
 
   <!-- PAGE 5: 맛있게 먹는 방법 -->
@@ -491,5 +501,16 @@ function closeModal(){document.getElementById('modal').classList.remove('show');
 function toggleAdmin(){const s=document.getElementById('webhook-section');s.style.display=s.style.display==='none'?'block':'none';}
 window.addEventListener('load',()=>{localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec');document.getElementById('webhook-url').value='https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec';});
 </script>
+
+<!-- 팝업 -->
+<div class="popup-overlay" id="popup-overlay" onclick="closePopup()">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <div class="popup-icon">🍈</div>
+    <div class="popup-title">파파야메론 마감임박!!</div>
+    <div class="popup-msg">마감 이후 주문건은<br>취소 예정입니다.</div>
+    <button class="popup-btn" onclick="closePopup()">확인</button>
+  </div>
+</div>
+<script>function closePopup(){document.getElementById("popup-overlay").style.display="none";}</script>
 </body>
 </html>
