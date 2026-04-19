@@ -628,10 +628,10 @@ function renderOrders() {
         </div>
         <div class="action-title" style="margin-bottom:8px;">📋 상태 변경</div>
         <div class="status-btns" style="margin-bottom:16px;">
-          ${['입금대기','입금완료','배송중'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')" style="flex:1">${s}</button>`).join('')}
+          ${['입금대기','입금완료'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')" style="flex:1">${s}</button>`).join('')}
         </div>
         <div class="st-btns" style="margin-top:6px;">
-          ${['배송완료','','선물'].map((s,idx)=>s?`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')" style="flex:1;${s==='선물'?'color:#e91e8c;border-color:#e91e8c;':''}">${s==='선물'?'🎁 선물':s}</button>`:`<span style="flex:1"></span>`).join('')}
+          ${['배송중','배송완료','선물'].map(s=>`<button class="st-btn ${o.paymentStatus===s?'active-status':''}" onclick="changeStatus(${i},'${s}')" style="flex:1;${s==='선물'?'color:#e91e8c;border-color:#e91e8c;':''}">${s==='선물'?'🎁 선물':s}</button>`).join('')}
         </div>
         <div class="action-title" style="margin-bottom:8px;">💬 문자 발송</div>
         <div class="msg-btns">
