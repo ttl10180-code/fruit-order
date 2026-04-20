@@ -337,10 +337,18 @@
   <div class="date-modal">
     <h3>🚚 배송 안내 입력</h3>
     <p id="date-modal-name">홍길동님 배송 정보</p>
-    <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">📅 배송 예정일</div>
-    <input type="text" id="date-input" placeholder="예: 4월 15일(화)" style="margin-bottom:12px"/>
-    <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">🚛 배송사 <span style="color:var(--muted);font-weight:400">(선택)</span></div>
-    <input type="text" id="carrier-input" placeholder="예: 로젠택배" value="로젠택배" style="margin-bottom:12px"/>
+    <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">📅 배송 예정일 <span style="color:var(--accent)">(클릭하여 변경)</span></div>
+    <input type="date" id="date-input" style="margin-bottom:12px;cursor:pointer"/>
+    <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">🚛 배송사 <span style="color:var(--accent)">(클릭하여 변경)</span></div>
+    <select id="carrier-input" style="margin-bottom:12px;width:100%;padding:13px 15px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s;cursor:pointer;">
+      <option value="로젠택배">로젠택배</option>
+      <option value="CJ대한통운">CJ대한통운</option>
+      <option value="한진택배">한진택배</option>
+      <option value="우체국택배">우체국택배</option>
+      <option value="롯데택배">롯데택배</option>
+      <option value="쿠팡로켓">쿠팡로켓</option>
+      <option value="직접배송">직접배송</option>
+    </select>
     <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">📦 송장번호 <span style="color:var(--muted);font-weight:400">(선택)</span></div>
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
     <span style="color:var(--muted);font-size:14px;white-space:nowrap;">442-210</span>
@@ -691,8 +699,13 @@ function sendDeliverySMS(i) {
   if (!o) return;
   pendingDeliveryIdx = i;
   document.getElementById('date-modal-name').textContent = o.name + '님 배송 정보 입력';
-  document.getElementById('date-input').value = '';
-  document.getElementById('carrier-input').value = '';
+  // 오늘 날짜 자동 입력
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  document.getElementById('date-input').value = yyyy+'-'+mm+'-'+dd;
+  document.getElementById('carrier-input').value = '로젠택배';
   document.getElementById('tracking-input').value = '';
   document.getElementById('date-modal-overlay').classList.add('show');
   setTimeout(() => document.getElementById('date-input').focus(), 100);
@@ -704,8 +717,12 @@ function closeDateModal() {
 }
 
 function confirmDeliveryDate() {
-  const date = document.getElementById('date-input').value.trim();
-  if (!date) { document.getElementById('date-input').focus(); return; }
+  const dateRaw = document.getElementById('date-input').value.trim();
+  if (!dateRaw) { document.getElementById('date-input').focus(); return; }
+  // 날짜 포맷 변환: 2026-04-20 → 4월 20일(일)
+  const days = ['일','월','화','수','목','금','토'];
+  const dObj = new Date(dateRaw);
+  const date = (dObj.getMonth()+1) + '월 ' + dObj.getDate() + '일(' + days[dObj.getDay()] + ')';
   const carrier  = document.getElementById('carrier-input').value.trim();
   const trackingSuffix = document.getElementById('tracking-input').value.trim();
   const tracking = trackingSuffix.length === 5 ? '442-210' + trackingSuffix[0] + '-' + trackingSuffix.slice(1) : (trackingSuffix ? '442-210' + trackingSuffix : '');
