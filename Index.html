@@ -407,39 +407,13 @@ let currentOrderNum='';
 
 // 재고/마감 설정
 const SOLD_OUT = { chamoe5:true, chamoe10:true }; // 참외 마감
-const MELON_MAX_KG = 45; // 파파야메론 최대 재고 (kg)
-let melonOrderedKgFromServer = 0; // 서버에서 불러온 이미 주문된 kg
+const MELON_MAX_KG = 45; // 파파야메론 남은 재고 (kg) - 수동 관리
 
 function getMelonOrderedKg() {
-  return melonOrderedKgFromServer + qty.melon5 * 5 + qty.melon10 * 10;
+  return qty.melon5 * 5 + qty.melon10 * 10;
 }
 function getMelonRemainingKg() {
   return MELON_MAX_KG - getMelonOrderedKg();
-}
-
-// 서버에서 파파야메론 주문 현황 불러오기
-async function loadMelonStock() {
-  try {
-    const wh = localStorage.getItem('gs_webhook');
-    if (!wh) { updateStockDisplay(); return; }
-    const res = await fetch(wh + '?action=getOrders');
-    const data = await res.json();
-    const orders = Array.isArray(data.orders) ? data.orders : [];
-    const activeStatuses = ['입금대기','입금완료','배송중'];
-    let total = 0;
-    for (const o of orders) {
-      if (!activeStatuses.includes(o.paymentStatus)) continue;
-      const m5  = parseInt(o.melon5)  || 0;
-      const m10 = parseInt(o.melon10) || 0;
-      // 비정상 값 방어 (1박스 최대 20개)
-      if (m5  >= 0 && m5  <= 20) total += m5  * 5;
-      if (m10 >= 0 && m10 <= 20) total += m10 * 10;
-    }
-    melonOrderedKgFromServer = total;
-  } catch(e) {
-    melonOrderedKgFromServer = 0;
-  }
-  updateStockDisplay();
 }
 
 function formatPhone(input){let v=input.value.replace(/[^0-9]/g,'');if(v.length<=3)input.value=v;else if(v.length<=7)input.value=v.slice(0,3)+'-'+v.slice(3);else input.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);}
@@ -581,7 +555,7 @@ document.getElementById('modal').classList.add('show');
 function closeModal(){document.getElementById('modal').classList.remove('show');Object.keys(sel).forEach(k=>{sel[k]=false;qty[k]=0;document.getElementById('card-'+k).classList.remove('selected');document.getElementById('q-'+k).textContent=0;});['name','phone','email','postcode','address1','address2','memo'].forEach(id=>document.getElementById(id).value='');currentOrderNum='';goPage(1);}
 function toggleAdmin(){const s=document.getElementById('webhook-section');s.style.display=s.style.display==='none'?'block':'none';}
 window.addEventListener('load',()=>{
-  loadMelonStock();localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec');document.getElementById('webhook-url').value='https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec';});
+  localStorage.setItem('gs_webhook','https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec');document.getElementById('webhook-url').value='https://script.google.com/macros/s/AKfycbxZ_QKrO9STcUM71pRQi3TB_Trq3LBfTcjxngbpo_btWOyJoU2WU7RWWuq6wVIBThCe/exec';});
 </script>
 
 <!-- 팝업 -->
