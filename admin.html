@@ -340,9 +340,12 @@
     <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">📅 배송 예정일</div>
     <input type="text" id="date-input" placeholder="예: 4월 15일(화)" style="margin-bottom:12px"/>
     <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">🚛 배송사 <span style="color:var(--muted);font-weight:400">(선택)</span></div>
-    <input type="text" id="carrier-input" placeholder="예: CJ대한통운, 로젠택배, 한진택배" style="margin-bottom:12px"/>
+    <input type="text" id="carrier-input" placeholder="예: 로젠택배" value="로젠택배" style="margin-bottom:12px"/>
     <div style="text-align:left;margin-bottom:8px;font-size:12px;color:var(--muted)">📦 송장번호 <span style="color:var(--muted);font-weight:400">(선택)</span></div>
-    <input type="text" id="tracking-input" placeholder="예: 123456789012" style="margin-bottom:16px"/>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
+    <span style="color:var(--muted);font-size:14px;white-space:nowrap;">442-210</span>
+    <input type="text" id="tracking-input" placeholder="*****" maxlength="5" style="flex:1;padding:13px 15px;background:var(--surface2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;text-align:center;transition:border-color .2s;" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,5)">
+</div>
     <div class="date-modal-btns">
       <button class="date-modal-cancel" onclick="closeDateModal()">취소</button>
       <button class="date-modal-confirm" onclick="confirmDeliveryDate()">문자 발송 →</button>
@@ -704,7 +707,8 @@ function confirmDeliveryDate() {
   const date = document.getElementById('date-input').value.trim();
   if (!date) { document.getElementById('date-input').focus(); return; }
   const carrier  = document.getElementById('carrier-input').value.trim();
-  const tracking = document.getElementById('tracking-input').value.trim();
+  const trackingSuffix = document.getElementById('tracking-input').value.trim();
+  const tracking = trackingSuffix.length === 5 ? '442-210' + trackingSuffix[0] + '-' + trackingSuffix.slice(1) : (trackingSuffix ? '442-210' + trackingSuffix : '');
   const filtered = currentFilter==='전체' ? allOrders : allOrders.filter(o=>o.paymentStatus===currentFilter);
   const o = filtered[pendingDeliveryIdx];
   if (!o) { closeDateModal(); return; }
